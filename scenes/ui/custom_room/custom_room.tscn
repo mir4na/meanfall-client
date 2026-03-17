@@ -1,0 +1,119 @@
+[gd_scene load_steps=2 format=3 uid="uid://custom_room"]
+
+[ext_resource type="Script" path="res://scripts/ui/custom_room.gd" id="1"]
+
+[node name="CustomRoom" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.04, 0.04, 0.07, 1)
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Panel" type="PanelContainer" parent="Center"]
+custom_minimum_size = Vector2(600, 560)
+
+[node name="VBox" type="VBoxContainer" parent="Center/Panel"]
+theme_override_constants/separation = 14
+
+[node name="TitleLabel" type="Label" parent="Center/Panel/VBox"]
+text = "CUSTOM ROOM"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 36
+
+[node name="TabRow" type="HBoxContainer" parent="Center/Panel/VBox"]
+
+[node name="CreateTabButton" type="Button" parent="Center/Panel/VBox/TabRow"]
+text = "Create Room"
+size_flags_horizontal = 3
+toggle_mode = true
+button_pressed = true
+
+[node name="JoinTabButton" type="Button" parent="Center/Panel/VBox/TabRow"]
+text = "Join Room"
+size_flags_horizontal = 3
+toggle_mode = true
+
+[node name="CreatePanel" type="VBoxContainer" parent="Center/Panel/VBox"]
+theme_override_constants/separation = 10
+
+[node name="MaxPlayersLabel" type="Label" parent="Center/Panel/VBox/CreatePanel"]
+text = "Players: 4"
+
+[node name="MaxPlayersSlider" type="HSlider" parent="Center/Panel/VBox/CreatePanel"]
+min_value = 2.0
+max_value = 10.0
+step = 1.0
+value = 4.0
+custom_minimum_size = Vector2(0, 32)
+
+[node name="MaxLivesLabel" type="Label" parent="Center/Panel/VBox/CreatePanel"]
+text = "Lives: 10"
+
+[node name="MaxLivesSlider" type="HSlider" parent="Center/Panel/VBox/CreatePanel"]
+min_value = 1.0
+max_value = 10.0
+step = 1.0
+value = 10.0
+custom_minimum_size = Vector2(0, 32)
+
+[node name="BotCountLabel" type="Label" parent="Center/Panel/VBox/CreatePanel"]
+text = "Bots: 0"
+
+[node name="BotCountSlider" type="HSlider" parent="Center/Panel/VBox/CreatePanel"]
+min_value = 0.0
+max_value = 3.0
+step = 1.0
+value = 0.0
+custom_minimum_size = Vector2(0, 32)
+
+[node name="RoomCodeDisplay" type="Label" parent="Center/Panel/VBox/CreatePanel"]
+text = ""
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 22
+
+[node name="CreateButton" type="Button" parent="Center/Panel/VBox/CreatePanel"]
+text = "CREATE ROOM"
+custom_minimum_size = Vector2(0, 55)
+
+[node name="JoinPanel" type="VBoxContainer" parent="Center/Panel/VBox"]
+visible = false
+theme_override_constants/separation = 12
+
+[node name="JoinLabel" type="Label" parent="Center/Panel/VBox/JoinPanel"]
+text = "Enter 6-character room code:"
+
+[node name="RoomCodeInput" type="LineEdit" parent="Center/Panel/VBox/JoinPanel"]
+placeholder_text = "ABCD12"
+max_length = 6
+custom_minimum_size = Vector2(0, 50)
+
+[node name="JoinButton" type="Button" parent="Center/Panel/VBox/JoinPanel"]
+text = "JOIN ROOM"
+custom_minimum_size = Vector2(0, 55)
+
+[node name="StatusLabel" type="Label" parent="Center/Panel/VBox"]
+text = ""
+horizontal_alignment = 1
+
+[node name="BackButton" type="Button" parent="Center/Panel/VBox"]
+text = "Back"
+
+[connection signal="pressed" from="Center/Panel/VBox/TabRow/CreateTabButton" to="." method="_on_create_tab_pressed"]
+[connection signal="pressed" from="Center/Panel/VBox/TabRow/JoinTabButton" to="." method="_on_join_tab_pressed"]
+[connection signal="value_changed" from="Center/Panel/VBox/CreatePanel/MaxPlayersSlider" to="." method="_on_max_players_changed"]
+[connection signal="value_changed" from="Center/Panel/VBox/CreatePanel/MaxLivesSlider" to="." method="_on_max_lives_changed"]
+[connection signal="value_changed" from="Center/Panel/VBox/CreatePanel/BotCountSlider" to="." method="_on_bot_count_changed"]
+[connection signal="pressed" from="Center/Panel/VBox/CreatePanel/CreateButton" to="." method="_on_create_pressed"]
+[connection signal="pressed" from="Center/Panel/VBox/JoinPanel/JoinButton" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="Center/Panel/VBox/BackButton" to="." method="_on_back_pressed"]
