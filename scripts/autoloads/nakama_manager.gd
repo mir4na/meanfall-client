@@ -9,6 +9,8 @@ const MAX_RECONNECT_ATTEMPTS := 5
 
 const SESSION_FILE := "user://nakama_session.save"
 
+signal login_succeeded(session)
+signal guest_created(session)
 signal session_connected(session)
 signal session_failed(message: String)
 signal match_joined(match_id: String)
@@ -44,7 +46,7 @@ func _try_restore_session() -> void:
 	if token.is_empty():
 		return
 		
-	var session = NakamaSession.restore(token)
+	var session = NakamaSession.new(token)
 	if session.is_expired():
 		var result = await _client.session_refresh_async(session)
 		if result.is_exception():
@@ -77,7 +79,26 @@ func authenticate_device(device_id: String) -> void:
 	if result.is_exception():
 		session_failed.emit(result.get_exception().message)
 		return
-	_on_authenticated(result)
+		
+	if result.created:
+		_session = result
+		guest_created.emit(result)
+	else:
+		_on_authenticated(result)
+
+func update_account(username: String) -> bool:
+	var result = await _client.update_account_async(_session, username)
+	if result.is_exception():
+		session_failed.emit(result.get_exception().message)
+		return false
+	_on_authenticated(_session)
+	return true
+
+func get_account() -> Dictionary:
+	var result = await _client.get_account_async(_session)
+	if result.is_exception():
+		return {}
+	return result.serialize()
 
 func authenticate_email(email: String, password: String, username: String = "") -> void:
 	var create := username != ""
@@ -99,6 +120,14 @@ func _on_authenticated(session: NakamaSession) -> void:
 	_save_session(_session)
 	GameState.session = _session
 	GameState.local_player_id = _session.user_id
+	
+	# Fetch full account info
+	GameState.account = await get_account()
+	if GameState.account.has("user"):
+		GameState.local_player_username = GameState.account["user"].get("username", session.username)
+	else:
+		GameState.local_player_username = session.username
+	
 	session_connected.emit(_session)
 
 func connect_socket() -> void:
@@ -137,6 +166,12 @@ func rpc_call(rpc_id: String, payload: Dictionary) -> Dictionary:
 		return {"error": result.get_exception().message}
 	var parsed = JSON.parse_string(result.payload)
 	return parsed if parsed is Dictionary else {}
+
+func get_player_stats() -> Dictionary:
+	return await rpc_call("get_player_stats", {})
+
+func get_match_history() -> Dictionary:
+	return await rpc_call("get_match_history", {})
 
 func _on_socket_connected() -> void:
 	_reconnect_attempts = 0

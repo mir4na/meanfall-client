@@ -7,6 +7,7 @@ const SETTINGS_KEY := "user_settings"
 @onready var sfx_slider: HSlider = $Center/Panel/VBox/SFXSlider
 @onready var logout_button: Button = $Center/Panel/VBox/LogoutButton
 @onready var link_button: Button = $Center/Panel/VBox/LinkEmailButton
+@onready var back_button: Button = $Center/Panel/VBox/BackButton
 
 func _ready() -> void:
 	back_button.pressed.connect(_on_back_pressed)
@@ -19,7 +20,7 @@ func _ready() -> void:
 	_update_account_buttons()
 
 func _update_account_buttons() -> void:
-	if GameState.session and GameState.session.email != "":
+	if GameState.account.get("email", "") != "":
 		link_button.visible = false
 
 func _load_settings() -> void:

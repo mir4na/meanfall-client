@@ -7,7 +7,8 @@ signal round_changed(round_number: int)
 
 enum GamePhase { NONE, WAITING, COUNTDOWN, GUESSING, REVEALING, NEXT_ROUND, GAME_OVER }
 
-var session
+var session: NakamaSession
+var account: Dictionary = {}
 var current_match_id: String = ""
 var local_player_id: String = ""
 var local_player_username: String = ""

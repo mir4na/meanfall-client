@@ -1,6 +1,732 @@
-[gd_scene load_steps=2 format=3 uid="uid://game_room"]
+[gd_scene format=3 uid="uid://qfgio7h4utge"]
 
-[ext_resource type="Script" path="res://scripts/game/game_room.gd" id="1"]
+[ext_resource type="Script" uid="uid://8ubee8h0dyan" path="res://scripts/game/elevator_intro.gd" id="1_game_room"]
 
-[node name="GameRoom" type="Node3D"]
-script = ExtResource("1")
+[sub_resource type="StandardMaterial3D" id="Mat_Floor"]
+albedo_color = Color(0.06, 0.06, 0.08, 1)
+metallic = 0.4
+roughness = 0.5
+uv1_scale = Vector3(4, 4, 4)
+
+[sub_resource type="PlaneMesh" id="Mesh_Floor"]
+material = SubResource("Mat_Floor")
+size = Vector2(18, 18)
+
+[sub_resource type="StandardMaterial3D" id="Mat_FloorTrim"]
+albedo_color = Color(0.25, 0.25, 0.3, 1)
+metallic = 0.9
+roughness = 0.1
+
+[sub_resource type="BoxMesh" id="Mesh_FloorTrimRing"]
+material = SubResource("Mat_FloorTrim")
+size = Vector3(18.1, 0.05, 0.12)
+
+[sub_resource type="StandardMaterial3D" id="Mat_Wall"]
+albedo_color = Color(0.09, 0.09, 0.12, 1)
+metallic = 0.1
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="Mesh_Wall"]
+material = SubResource("Mat_Wall")
+size = Vector3(18.1, 7, 0.3)
+
+[sub_resource type="StandardMaterial3D" id="Mat_Trim"]
+albedo_color = Color(0.3, 0.28, 0.25, 1)
+metallic = 0.95
+roughness = 0.1
+
+[sub_resource type="BoxMesh" id="Mesh_WallSkirting"]
+material = SubResource("Mat_Trim")
+size = Vector3(18.1, 0.15, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="Mat_WallPanel"]
+albedo_color = Color(0.12, 0.12, 0.16, 1)
+metallic = 0.6
+roughness = 0.4
+
+[sub_resource type="BoxMesh" id="Mesh_WallPanel"]
+material = SubResource("Mat_WallPanel")
+size = Vector3(3.5, 4, 0.05)
+
+[sub_resource type="StandardMaterial3D" id="Mat_GlowBlue"]
+albedo_color = Color(0.3, 0.5, 1, 1)
+emission_enabled = true
+emission = Color(0.3, 0.5, 1, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="BoxMesh" id="Mesh_WallGlowStrip"]
+material = SubResource("Mat_GlowBlue")
+size = Vector3(3.4, 0.05, 0.04)
+
+[sub_resource type="StandardMaterial3D" id="Mat_Ceiling"]
+albedo_color = Color(0.05, 0.05, 0.07, 1)
+metallic = 0.3
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="Mesh_Ceiling"]
+material = SubResource("Mat_Ceiling")
+size = Vector3(18.1, 0.2, 18.1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_CeilingBeam"]
+albedo_color = Color(0.15, 0.14, 0.12, 1)
+metallic = 0.9
+roughness = 0.2
+
+[sub_resource type="BoxMesh" id="Mesh_CeilingBeam"]
+material = SubResource("Mat_CeilingBeam")
+size = Vector3(18.1, 0.3, 0.3)
+
+[sub_resource type="BoxMesh" id="Mesh_CeilingBeamCross"]
+material = SubResource("Mat_CeilingBeam")
+size = Vector3(0.3, 0.3, 18.1)
+
+[sub_resource type="BoxMesh" id="Mesh_CeilingGlowStrip"]
+material = SubResource("Mat_GlowBlue")
+size = Vector3(12, 0.04, 0.15)
+
+[sub_resource type="StandardMaterial3D" id="Mat_Pillar"]
+albedo_color = Color(0.14, 0.12, 0.1, 1)
+metallic = 0.8
+roughness = 0.3
+
+[sub_resource type="CylinderMesh" id="Mesh_Pillar"]
+material = SubResource("Mat_Pillar")
+top_radius = 0.28
+bottom_radius = 0.28
+height = 7.0
+
+[sub_resource type="CylinderMesh" id="Mesh_PillarCap"]
+material = SubResource("Mat_Trim")
+top_radius = 0.35
+bottom_radius = 0.35
+height = 0.15
+
+[sub_resource type="StandardMaterial3D" id="Mat_PillarGlow"]
+albedo_color = Color(0.4, 0.6, 1, 1)
+emission_enabled = true
+emission = Color(0.3, 0.5, 1, 1)
+emission_energy_multiplier = 1.2
+
+[sub_resource type="CylinderMesh" id="Mesh_PillarGlow"]
+material = SubResource("Mat_PillarGlow")
+top_radius = 0.03
+bottom_radius = 0.03
+height = 6.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_TableTop"]
+albedo_color = Color(0.1, 0.08, 0.07, 1)
+metallic = 0.4
+roughness = 0.35
+
+[sub_resource type="CylinderMesh" id="Mesh_TableTop"]
+material = SubResource("Mat_TableTop")
+top_radius = 2.6
+bottom_radius = 2.55
+height = 0.12
+
+[sub_resource type="StandardMaterial3D" id="Mat_TableEdge"]
+albedo_color = Color(0.22, 0.2, 0.18, 1)
+metallic = 0.8
+roughness = 0.2
+emission_enabled = true
+emission = Color(0.1, 0.15, 0.3, 1)
+emission_energy_multiplier = 0.4
+
+[sub_resource type="CylinderMesh" id="Mesh_TableEdge"]
+material = SubResource("Mat_TableEdge")
+top_radius = 2.62
+bottom_radius = 2.62
+height = 0.05
+
+[sub_resource type="StandardMaterial3D" id="Mat_TableBase"]
+albedo_color = Color(0.12, 0.1, 0.08, 1)
+metallic = 0.9
+roughness = 0.15
+
+[sub_resource type="CylinderMesh" id="Mesh_TableBase"]
+material = SubResource("Mat_TableBase")
+top_radius = 0.18
+bottom_radius = 0.35
+height = 1.0
+
+[sub_resource type="CylinderMesh" id="Mesh_TableFoot"]
+material = SubResource("Mat_TableBase")
+top_radius = 0.6
+bottom_radius = 0.65
+height = 0.08
+
+[sub_resource type="StandardMaterial3D" id="Mat_Chair"]
+albedo_color = Color(0.1, 0.08, 0.07, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="Mesh_ChairSeat"]
+material = SubResource("Mat_Chair")
+size = Vector3(0.5, 0.06, 0.5)
+
+[sub_resource type="BoxMesh" id="Mesh_ChairBack"]
+material = SubResource("Mat_Chair")
+size = Vector3(0.5, 0.55, 0.05)
+
+[sub_resource type="StandardMaterial3D" id="Mat_ChairMetal"]
+albedo_color = Color(0.25, 0.22, 0.2, 1)
+metallic = 0.95
+roughness = 0.1
+
+[sub_resource type="CylinderMesh" id="Mesh_ChairLeg"]
+material = SubResource("Mat_ChairMetal")
+top_radius = 0.02
+bottom_radius = 0.02
+height = 0.46
+
+[sub_resource type="CylinderMesh" id="Mesh_LampPole"]
+material = SubResource("Mat_ChairMetal")
+top_radius = 0.015
+bottom_radius = 0.015
+height = 2.5
+
+[sub_resource type="StandardMaterial3D" id="Mat_LampShade"]
+albedo_color = Color(0.15, 0.12, 0.1, 1)
+metallic = 0.7
+roughness = 0.3
+
+[sub_resource type="CylinderMesh" id="Mesh_LampShade"]
+material = SubResource("Mat_LampShade")
+top_radius = 0.15
+bottom_radius = 0.4
+height = 0.4
+
+[sub_resource type="StandardMaterial3D" id="Mat_LampBulb"]
+albedo_color = Color(1, 0.95, 0.8, 1)
+emission_enabled = true
+emission = Color(1, 0.9, 0.7, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="SphereMesh" id="Mesh_LampBulb"]
+material = SubResource("Mat_LampBulb")
+radius = 0.07
+height = 0.14
+
+[node name="GameRoom" type="Node3D" unique_id=1856797118]
+script = ExtResource("1_game_room")
+
+[node name="Room" type="Node3D" parent="." unique_id=731815000]
+
+[node name="Floor" type="MeshInstance3D" parent="Room" unique_id=463642769]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.014609098, -0.012120724, 0.01935482)
+mesh = SubResource("Mesh_Floor")
+
+[node name="FloorTrimFront" type="MeshInstance3D" parent="Room" unique_id=1428820671]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 9)
+mesh = SubResource("Mesh_FloorTrimRing")
+
+[node name="FloorTrimBack" type="MeshInstance3D" parent="Room" unique_id=494764800]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, -9)
+mesh = SubResource("Mesh_FloorTrimRing")
+
+[node name="FloorTrimLeft" type="MeshInstance3D" parent="Room" unique_id=1632820373]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -9, 0.025, 0)
+mesh = SubResource("Mesh_FloorTrimRing")
+
+[node name="FloorTrimRight" type="MeshInstance3D" parent="Room" unique_id=1126711674]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 9, 0.025, 0)
+mesh = SubResource("Mesh_FloorTrimRing")
+
+[node name="WallBack" type="MeshInstance3D" parent="Room" unique_id=1584593542]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, -9.05)
+mesh = SubResource("Mesh_Wall")
+
+[node name="WallFront" type="MeshInstance3D" parent="Room" unique_id=414680644]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 9.05)
+mesh = SubResource("Mesh_Wall")
+
+[node name="WallLeft" type="MeshInstance3D" parent="Room" unique_id=1235207977]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -9.05, 3.5, 0)
+mesh = SubResource("Mesh_Wall")
+
+[node name="WallRight" type="MeshInstance3D" parent="Room" unique_id=341151630]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 9.05, 3.5, 0)
+mesh = SubResource("Mesh_Wall")
+
+[node name="SkirtingBack" type="MeshInstance3D" parent="Room" unique_id=1614498560]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, -8.9)
+mesh = SubResource("Mesh_WallSkirting")
+
+[node name="SkirtingFront" type="MeshInstance3D" parent="Room" unique_id=893120416]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, 8.9)
+mesh = SubResource("Mesh_WallSkirting")
+
+[node name="SkirtingLeft" type="MeshInstance3D" parent="Room" unique_id=460525703]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -8.9, 0.075, 0)
+mesh = SubResource("Mesh_WallSkirting")
+
+[node name="SkirtingRight" type="MeshInstance3D" parent="Room" unique_id=516683366]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 8.9, 0.075, 0)
+mesh = SubResource("Mesh_WallSkirting")
+
+[node name="WallPanels" type="Node3D" parent="Room" unique_id=916463385]
+
+[node name="PanelBack1" type="MeshInstance3D" parent="Room/WallPanels" unique_id=1556168551]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2.5, -8.85)
+mesh = SubResource("Mesh_WallPanel")
+
+[node name="PanelBack2" type="MeshInstance3D" parent="Room/WallPanels" unique_id=1689632812]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -8.85)
+mesh = SubResource("Mesh_WallPanel")
+
+[node name="PanelBack3" type="MeshInstance3D" parent="Room/WallPanels" unique_id=1846942743]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2.5, -8.85)
+mesh = SubResource("Mesh_WallPanel")
+
+[node name="PanelLeft1" type="MeshInstance3D" parent="Room/WallPanels" unique_id=569228871]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -8.85, 2.5, -5)
+mesh = SubResource("Mesh_WallPanel")
+
+[node name="PanelLeft2" type="MeshInstance3D" parent="Room/WallPanels" unique_id=1129744501]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -8.85, 2.5, 0)
+mesh = SubResource("Mesh_WallPanel")
+
+[node name="PanelLeft3" type="MeshInstance3D" parent="Room/WallPanels" unique_id=930070457]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -8.85, 2.5, 5)
+mesh = SubResource("Mesh_WallPanel")
+
+[node name="PanelRight1" type="MeshInstance3D" parent="Room/WallPanels" unique_id=622146048]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 8.85, 2.5, -5)
+mesh = SubResource("Mesh_WallPanel")
+
+[node name="PanelRight2" type="MeshInstance3D" parent="Room/WallPanels" unique_id=938219455]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 8.85, 2.5, 0)
+mesh = SubResource("Mesh_WallPanel")
+
+[node name="PanelRight3" type="MeshInstance3D" parent="Room/WallPanels" unique_id=1585914424]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 8.85, 2.5, 5)
+mesh = SubResource("Mesh_WallPanel")
+
+[node name="GlowStripBack1" type="MeshInstance3D" parent="Room/WallPanels" unique_id=96984741]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -8.82)
+mesh = SubResource("Mesh_WallGlowStrip")
+
+[node name="GlowStripBack2" type="MeshInstance3D" parent="Room/WallPanels" unique_id=622091906]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -8.82)
+mesh = SubResource("Mesh_WallGlowStrip")
+
+[node name="GlowStripBack3" type="MeshInstance3D" parent="Room/WallPanels" unique_id=1810025037]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, -8.82)
+mesh = SubResource("Mesh_WallGlowStrip")
+
+[node name="GlowStripLeft1" type="MeshInstance3D" parent="Room/WallPanels" unique_id=445861367]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -8.82, 1, -5)
+mesh = SubResource("Mesh_WallGlowStrip")
+
+[node name="GlowStripLeft2" type="MeshInstance3D" parent="Room/WallPanels" unique_id=1035159279]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -8.82, 1, 0)
+mesh = SubResource("Mesh_WallGlowStrip")
+
+[node name="GlowStripLeft3" type="MeshInstance3D" parent="Room/WallPanels" unique_id=1290217354]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -8.82, 1, 5)
+mesh = SubResource("Mesh_WallGlowStrip")
+
+[node name="GlowStripRight1" type="MeshInstance3D" parent="Room/WallPanels" unique_id=1112045421]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 8.82, 1, -5)
+mesh = SubResource("Mesh_WallGlowStrip")
+
+[node name="GlowStripRight2" type="MeshInstance3D" parent="Room/WallPanels" unique_id=2036578415]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 8.82, 1, 0)
+mesh = SubResource("Mesh_WallGlowStrip")
+
+[node name="GlowStripRight3" type="MeshInstance3D" parent="Room/WallPanels" unique_id=598987087]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 8.82, 1, 5)
+mesh = SubResource("Mesh_WallGlowStrip")
+
+[node name="Ceiling" type="MeshInstance3D" parent="Room" unique_id=555225007]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.1, 0)
+mesh = SubResource("Mesh_Ceiling")
+
+[node name="CeilingBeam1" type="MeshInstance3D" parent="Room" unique_id=670436275]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.95, -4)
+mesh = SubResource("Mesh_CeilingBeam")
+
+[node name="CeilingBeam2" type="MeshInstance3D" parent="Room" unique_id=1507649294]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.95, 0)
+mesh = SubResource("Mesh_CeilingBeam")
+
+[node name="CeilingBeam3" type="MeshInstance3D" parent="Room" unique_id=1770116546]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.95, 4)
+mesh = SubResource("Mesh_CeilingBeam")
+
+[node name="CeilingBeamCross1" type="MeshInstance3D" parent="Room" unique_id=1546973759]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 6.95, 0)
+mesh = SubResource("Mesh_CeilingBeamCross")
+
+[node name="CeilingBeamCross2" type="MeshInstance3D" parent="Room" unique_id=1688580904]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.95, 0)
+mesh = SubResource("Mesh_CeilingBeamCross")
+
+[node name="CeilingBeamCross3" type="MeshInstance3D" parent="Room" unique_id=861286855]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 6.95, 0)
+mesh = SubResource("Mesh_CeilingBeamCross")
+
+[node name="CeilingGlowRing" type="MeshInstance3D" parent="Room" unique_id=1093034717]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.9, 0)
+mesh = SubResource("Mesh_CeilingGlowStrip")
+
+[node name="CeilingGlowRingV" type="MeshInstance3D" parent="Room" unique_id=964678457]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 6.9, 0)
+mesh = SubResource("Mesh_CeilingGlowStrip")
+
+[node name="Pillars" type="Node3D" parent="Room" unique_id=909626257]
+
+[node name="Pillar_NW" type="Node3D" parent="Room/Pillars" unique_id=201780761]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 3.5, -6.5)
+
+[node name="Shaft" type="MeshInstance3D" parent="Room/Pillars/Pillar_NW" unique_id=554963001]
+mesh = SubResource("Mesh_Pillar")
+
+[node name="CapTop" type="MeshInstance3D" parent="Room/Pillars/Pillar_NW" unique_id=162779911]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.57, 0)
+mesh = SubResource("Mesh_PillarCap")
+
+[node name="CapBot" type="MeshInstance3D" parent="Room/Pillars/Pillar_NW" unique_id=1726142645]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.57, 0)
+mesh = SubResource("Mesh_PillarCap")
+
+[node name="GlowLine" type="MeshInstance3D" parent="Room/Pillars/Pillar_NW" unique_id=1227701223]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28, 0, 0)
+mesh = SubResource("Mesh_PillarGlow")
+
+[node name="Pillar_NE" type="Node3D" parent="Room/Pillars" unique_id=1225600930]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 3.5, -6.5)
+
+[node name="Shaft" type="MeshInstance3D" parent="Room/Pillars/Pillar_NE" unique_id=318022840]
+mesh = SubResource("Mesh_Pillar")
+
+[node name="CapTop" type="MeshInstance3D" parent="Room/Pillars/Pillar_NE" unique_id=1526133355]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.57, 0)
+mesh = SubResource("Mesh_PillarCap")
+
+[node name="CapBot" type="MeshInstance3D" parent="Room/Pillars/Pillar_NE" unique_id=703804416]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.57, 0)
+mesh = SubResource("Mesh_PillarCap")
+
+[node name="GlowLine" type="MeshInstance3D" parent="Room/Pillars/Pillar_NE" unique_id=406584899]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28, 0, 0)
+mesh = SubResource("Mesh_PillarGlow")
+
+[node name="Pillar_SW" type="Node3D" parent="Room/Pillars" unique_id=1774501464]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 3.5, 6.5)
+
+[node name="Shaft" type="MeshInstance3D" parent="Room/Pillars/Pillar_SW" unique_id=1229342064]
+mesh = SubResource("Mesh_Pillar")
+
+[node name="CapTop" type="MeshInstance3D" parent="Room/Pillars/Pillar_SW" unique_id=9526078]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.57, 0)
+mesh = SubResource("Mesh_PillarCap")
+
+[node name="CapBot" type="MeshInstance3D" parent="Room/Pillars/Pillar_SW" unique_id=1900381958]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.57, 0)
+mesh = SubResource("Mesh_PillarCap")
+
+[node name="GlowLine" type="MeshInstance3D" parent="Room/Pillars/Pillar_SW" unique_id=357187347]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28, 0, 0)
+mesh = SubResource("Mesh_PillarGlow")
+
+[node name="Pillar_SE" type="Node3D" parent="Room/Pillars" unique_id=650562052]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 3.5, 6.5)
+
+[node name="Shaft" type="MeshInstance3D" parent="Room/Pillars/Pillar_SE" unique_id=961108962]
+mesh = SubResource("Mesh_Pillar")
+
+[node name="CapTop" type="MeshInstance3D" parent="Room/Pillars/Pillar_SE" unique_id=1408130995]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.57, 0)
+mesh = SubResource("Mesh_PillarCap")
+
+[node name="CapBot" type="MeshInstance3D" parent="Room/Pillars/Pillar_SE" unique_id=339208915]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.57, 0)
+mesh = SubResource("Mesh_PillarCap")
+
+[node name="GlowLine" type="MeshInstance3D" parent="Room/Pillars/Pillar_SE" unique_id=1990638395]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28, 0, 0)
+mesh = SubResource("Mesh_PillarGlow")
+
+[node name="Table" type="Node3D" parent="." unique_id=1117986449]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Top" type="MeshInstance3D" parent="Table" unique_id=1968563009]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, 0)
+mesh = SubResource("Mesh_TableTop")
+
+[node name="Edge" type="MeshInstance3D" parent="Table" unique_id=943380526]
+mesh = SubResource("Mesh_TableEdge")
+
+[node name="Base" type="MeshInstance3D" parent="Table" unique_id=2117284565]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.56, 0)
+mesh = SubResource("Mesh_TableBase")
+
+[node name="Foot" type="MeshInstance3D" parent="Table" unique_id=2098585264]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.04, 0)
+mesh = SubResource("Mesh_TableFoot")
+
+[node name="TableGlow" type="OmniLight3D" parent="Table" unique_id=1744208998]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+light_color = Color(0.3, 0.5, 1, 1)
+light_energy = 0.6
+omni_range = 4.0
+
+[node name="Chairs" type="Node3D" parent="." unique_id=1329884934]
+
+[node name="Chair_1" type="Node3D" parent="Chairs" unique_id=1402716243]
+transform = Transform3D(-0.99767, 0, 0.06822424, 0, 1, 0, -0.06822424, 0, -0.99767, 0, 0.23, 3.8)
+
+[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_1" unique_id=373139664]
+mesh = SubResource("Mesh_ChairSeat")
+
+[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_1" unique_id=2063233915]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.305, -0.25)
+mesh = SubResource("Mesh_ChairBack")
+
+[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_1" unique_id=916980038]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_1" unique_id=1224490001]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_1" unique_id=1634914828]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_1" unique_id=159088522]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="Chair_2" type="Node3D" parent="Chairs" unique_id=365117449]
+transform = Transform3D(-0.698865, 0, -0.715254, 0, 1, 0, 0.715254, 0, -0.698865, 2.687, 0.23, 2.687)
+
+[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_2" unique_id=991234107]
+mesh = SubResource("Mesh_ChairSeat")
+
+[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_2" unique_id=943688502]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.305, -0.25)
+mesh = SubResource("Mesh_ChairBack")
+
+[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_2" unique_id=1081143337]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_2" unique_id=97962038]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_2" unique_id=585569695]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_2" unique_id=493051265]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="Chair_3" type="Node3D" parent="Chairs" unique_id=994961500]
+transform = Transform3D(-0.05813899, 0, -0.9983085, 0, 1, 0, 0.9983085, 0, -0.05813899, 3.8, 0.23, 0)
+
+[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_3" unique_id=369954804]
+mesh = SubResource("Mesh_ChairSeat")
+
+[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_3" unique_id=794980445]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.305, -0.25)
+mesh = SubResource("Mesh_ChairBack")
+
+[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_3" unique_id=655396594]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_3" unique_id=49342416]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_3" unique_id=465000728]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_3" unique_id=465123795]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="Chair_4" type="Node3D" parent="Chairs" unique_id=1694898232]
+transform = Transform3D(0.69802815, 0, -0.7160708, 0, 1, 0, 0.7160708, 0, 0.69802815, 2.687, 0.23, -2.687)
+
+[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_4" unique_id=388716529]
+mesh = SubResource("Mesh_ChairSeat")
+
+[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_4" unique_id=2070621214]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.305, -0.25)
+mesh = SubResource("Mesh_ChairBack")
+
+[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_4" unique_id=395421743]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_4" unique_id=754906915]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_4" unique_id=2106034646]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_4" unique_id=1377649254]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="Chair_5" type="Node3D" parent="Chairs" unique_id=1863056817]
+transform = Transform3D(0.99996775, 0, -0.008028334, 0, 1, 0, 0.008028334, 0, 0.99996775, 0, 0.23, -3.8)
+
+[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_5" unique_id=937404167]
+mesh = SubResource("Mesh_ChairSeat")
+
+[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_5" unique_id=22594390]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.305, -0.25)
+mesh = SubResource("Mesh_ChairBack")
+
+[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_5" unique_id=1578560775]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_5" unique_id=1719083492]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_5" unique_id=1470188368]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_5" unique_id=9641631]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="Chair_6" type="Node3D" parent="Chairs" unique_id=749895288]
+transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, -2.687, 0.23, 2.687)
+
+[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_6" unique_id=1774485038]
+mesh = SubResource("Mesh_ChairSeat")
+
+[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_6" unique_id=1210647575]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.305, -0.25)
+mesh = SubResource("Mesh_ChairBack")
+
+[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_6" unique_id=176714030]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_6" unique_id=407638203]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_6" unique_id=378335997]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_6" unique_id=887098401]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="Chair_7" type="Node3D" parent="Chairs" unique_id=957218953]
+transform = Transform3D(-0.009686394, 0, 0.9999531, 0, 1, 0, -0.9999531, 0, -0.009686394, -3.8, 0.23, 0)
+
+[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_7" unique_id=2003507932]
+mesh = SubResource("Mesh_ChairSeat")
+
+[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_7" unique_id=1725492435]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.305, -0.25)
+mesh = SubResource("Mesh_ChairBack")
+
+[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_7" unique_id=1813807662]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_7" unique_id=2047821748]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_7" unique_id=1847332213]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_7" unique_id=347263498]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="Chair_8" type="Node3D" parent="Chairs" unique_id=1474623949]
+transform = Transform3D(0.67226374, 0, 0.7403122, 0, 1, 0, -0.7403122, 0, 0.67226374, -2.687, 0.23, -2.687)
+
+[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_8" unique_id=1748131515]
+mesh = SubResource("Mesh_ChairSeat")
+
+[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_8" unique_id=1059854343]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.305, -0.25)
+mesh = SubResource("Mesh_ChairBack")
+
+[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_8" unique_id=1074071105]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_8" unique_id=2002351485]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_8" unique_id=711449933]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_8" unique_id=972559076]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="HangingLamp" type="Node3D" parent="." unique_id=1273754459]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7, 0)
+
+[node name="Pole" type="MeshInstance3D" parent="HangingLamp" unique_id=394550512]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.25, 0)
+mesh = SubResource("Mesh_LampPole")
+
+[node name="Shade" type="MeshInstance3D" parent="HangingLamp" unique_id=1157682163]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.7, 0)
+mesh = SubResource("Mesh_LampShade")
+
+[node name="Bulb" type="MeshInstance3D" parent="HangingLamp" unique_id=1773839304]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.62, 0)
+mesh = SubResource("Mesh_LampBulb")
+
+[node name="Lighting" type="Node3D" parent="." unique_id=1587067108]
+
+[node name="MainSpot" type="SpotLight3D" parent="Lighting" unique_id=730756652]
+transform = Transform3D(1, 0, 0, 0, -1, 0, 0, 0, -1, 0, 6.7, 0)
+light_color = Color(1, 0.92, 0.78, 1)
+light_energy = 5.0
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 40.0
+
+[node name="FillLight_NW" type="OmniLight3D" parent="Lighting" unique_id=633156774]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4.5, -5)
+light_color = Color(0.3, 0.4, 0.8, 1)
+omni_range = 8.0
+
+[node name="FillLight_SE" type="OmniLight3D" parent="Lighting" unique_id=691480159]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 4.5, 5)
+light_color = Color(0.4, 0.3, 0.7, 1)
+light_energy = 0.8
+omni_range = 8.0
+
+[node name="AmbientGlow" type="OmniLight3D" parent="Lighting" unique_id=468396982]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+light_color = Color(0.2, 0.35, 0.8, 1)
+light_energy = 0.4
+
+[node name="Seats" type="Node3D" parent="." unique_id=1873386167]
+
+[node name="CameraRoot" type="Node3D" parent="." unique_id=1188009115]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CameraRoot" unique_id=1886265677]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 2.5, 6.5)
+fov = 60.0

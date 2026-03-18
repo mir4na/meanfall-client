@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://b8y4g2v6f1j2r"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_Body"]
+albedo_color = Color(0.18, 0.28, 0.6, 1)
+metallic = 0.2
+roughness = 0.5
+
+[sub_resource type="CapsuleMesh" id="Mesh_Torso"]
+material = SubResource("Mat_Body")
+radius = 0.28
+height = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_Chest"]
+albedo_color = Color(0.12, 0.18, 0.4, 1)
+metallic = 0.4
+roughness = 0.4
+
+[sub_resource type="BoxMesh" id="Mesh_Chest"]
+material = SubResource("Mat_Chest")
+size = Vector3(0.48, 0.35, 0.22)
+
+[sub_resource type="StandardMaterial3D" id="Mat_Shoulder"]
+albedo_color = Color(0.25, 0.35, 0.7, 1)
+metallic = 0.3
+roughness = 0.45
+
+[sub_resource type="SphereMesh" id="Mesh_ShoulderL"]
+material = SubResource("Mat_Shoulder")
+radius = 0.14
+height = 0.28
+
+[sub_resource type="CapsuleMesh" id="Mesh_Arm"]
+material = SubResource("Mat_Body")
+radius = 0.08
+height = 0.5
+
+[sub_resource type="SphereMesh" id="Mesh_ShoulderR"]
+material = SubResource("Mat_Shoulder")
+radius = 0.14
+height = 0.28
+
+[sub_resource type="CapsuleMesh" id="Mesh_Leg"]
+material = SubResource("Mat_Body")
+radius = 0.1
+height = 0.55
+
+[sub_resource type="StandardMaterial3D" id="Mat_Head"]
+albedo_color = Color(0.22, 0.18, 0.15, 1)
+roughness = 0.7
+
+[sub_resource type="SphereMesh" id="Mesh_Head"]
+material = SubResource("Mat_Head")
+radius = 0.22
+height = 0.44
+
+[sub_resource type="StandardMaterial3D" id="Mat_Visor"]
+albedo_color = Color(0.1, 0.4, 0.9, 1)
+metallic = 0.5
+roughness = 0.0
+emission_enabled = true
+emission = Color(0.1, 0.4, 1, 1)
+emission_energy_multiplier = 1.5
+
+[sub_resource type="BoxMesh" id="Mesh_Visor"]
+material = SubResource("Mat_Visor")
+size = Vector3(0.3, 0.1, 0.06)
+
+[sub_resource type="StandardMaterial3D" id="Mat_VisorGlow"]
+albedo_color = Color(0.2, 0.6, 1, 1)
+emission_enabled = true
+emission = Color(0.2, 0.6, 1, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="SphereMesh" id="Mesh_VisorGlowDot"]
+material = SubResource("Mat_VisorGlow")
+radius = 0.03
+height = 0.06
+
+[node name="PlayerCharacter" type="Node3D" unique_id=44962497]
+
+[node name="Torso" type="MeshInstance3D" parent="." unique_id=1150398651]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+mesh = SubResource("Mesh_Torso")
+
+[node name="ChestPlate" type="MeshInstance3D" parent="Torso" unique_id=1571372035]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08, 0.1)
+mesh = SubResource("Mesh_Chest")
+
+[node name="ShoulderL" type="MeshInstance3D" parent="Torso" unique_id=1574634301]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.36, 0.2, 0)
+mesh = SubResource("Mesh_ShoulderL")
+
+[node name="ArmL" type="MeshInstance3D" parent="Torso" unique_id=770061814]
+transform = Transform3D(1, 0, 0, 0, 0.9848, 0.1736, 0, -0.1736, 0.9848, -0.38, -0.07, 0)
+mesh = SubResource("Mesh_Arm")
+
+[node name="ShoulderR" type="MeshInstance3D" parent="Torso" unique_id=510643709]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.36, 0.2, 0)
+mesh = SubResource("Mesh_ShoulderR")
+
+[node name="ArmR" type="MeshInstance3D" parent="Torso" unique_id=402103098]
+transform = Transform3D(1, 0, 0, 0, 0.9848, 0.1736, 0, -0.1736, 0.9848, 0.38, -0.07, 0)
+mesh = SubResource("Mesh_Arm")
+
+[node name="LegL" type="MeshInstance3D" parent="." unique_id=186764436]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14, 0.275, 0)
+mesh = SubResource("Mesh_Leg")
+
+[node name="LegR" type="MeshInstance3D" parent="." unique_id=771365455]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14, 0.275, 0)
+mesh = SubResource("Mesh_Leg")
+
+[node name="Head" type="Node3D" parent="." unique_id=458900965]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4660203, 0)
+
+[node name="Skull" type="MeshInstance3D" parent="Head" unique_id=85616630]
+mesh = SubResource("Mesh_Head")
+
+[node name="Visor" type="MeshInstance3D" parent="Head" unique_id=737406225]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0.18)
+mesh = SubResource("Mesh_Visor")
+
+[node name="GlowDotL" type="MeshInstance3D" parent="Head" unique_id=678626204]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08, 0.04, 0.2)
+mesh = SubResource("Mesh_VisorGlowDot")
+
+[node name="GlowDotR" type="MeshInstance3D" parent="Head" unique_id=1735853649]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08, 0.04, 0.2)
+mesh = SubResource("Mesh_VisorGlowDot")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Head" unique_id=1944835437]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0.25)
+light_color = Color(0.3, 0.6, 1, 1)
+light_energy = 0.4
+omni_range = 1.5
+
+[node name="UsernameLabel" type="Label3D" parent="." unique_id=365106140]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+billboard = 1
+no_depth_test = true
+text = "Player"
+font_size = 56
+outline_size = 10

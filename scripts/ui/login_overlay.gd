@@ -12,10 +12,12 @@ extends Control
 @onready var error_label: Label = $ErrorLabel
 
 var _current_email: String = ""
+var _is_guest_mode: bool = false
 
 func _ready() -> void:
 	_show_panel(main_panel)
 	NakamaManager.session_connected.connect(_on_session_connected)
+	NakamaManager.guest_created.connect(_on_guest_created)
 	NakamaManager.session_failed.connect(_on_session_failed)
 
 func _show_panel(panel: Control) -> void:
@@ -54,22 +56,39 @@ func _on_verify_otp_pressed() -> void:
 	if result.has("error"):
 		error_label.text = result.error
 	else:
+		_is_guest_mode = false
+		$RegisterPanel/Label.text = "Complete Profile"
+		password_input.visible = true
 		_show_panel(register_panel)
+
+func _on_guest_created(_session) -> void:
+	_is_guest_mode = true
+	$RegisterPanel/Label.text = "Choose Username"
+	password_input.visible = false
+	_show_panel(register_panel)
 
 func _on_finish_auth_pressed() -> void:
 	var password = password_input.text
 	var username = username_input.text
 	
-	if password.length() < 8:
-		error_label.text = "Password must be at least 8 characters"
-		return
-		
-	if GameState.session:
-		var success = await NakamaManager.link_email(_current_email, password)
+	if _is_guest_mode:
+		if username.is_empty():
+			error_label.text = "Username is required"
+			return
+		var success = await NakamaManager.update_account(username)
 		if success:
 			hide()
 	else:
-		NakamaManager.authenticate_email(_current_email, password, username)
+		if password.length() < 8:
+			error_label.text = "Password must be at least 8 characters"
+			return
+			
+		if GameState.session:
+			var success = await NakamaManager.link_email(_current_email, password)
+			if success:
+				hide()
+		else:
+			NakamaManager.authenticate_email(_current_email, password, username)
 
 func _on_back_pressed() -> void:
 	_show_panel(main_panel)
