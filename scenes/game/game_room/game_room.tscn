@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://qfgio7h4utge"]
 
-[ext_resource type="Script" path="res://scripts/game/game_room.gd" id="1_game_room"]
+[ext_resource type="Script" uid="uid://c2bqd0psjg3ql" path="res://scripts/game/game_room.gd" id="1_game_room"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_Floor"]
 albedo_color = Color(0.06, 0.06, 0.08, 1)
@@ -205,6 +205,14 @@ emission_energy_multiplier = 3.0
 material = SubResource("Mat_LampBulb")
 radius = 0.07
 height = 0.14
+
+[sub_resource type="BoxMesh" id="Mesh_ElevatorDoor"]
+size = Vector3(2.5, 2.8, 0.06)
+
+[sub_resource type="StandardMaterial3D" id="Mat_ElevatorDoor"]
+albedo_color = Color(0.14, 0.14, 0.18, 1)
+metallic = 0.95
+roughness = 0.18
 
 [node name="GameRoom" type="Node3D" unique_id=1856797118]
 script = ExtResource("1_game_room")
@@ -730,3 +738,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 [node name="Camera3D" type="Camera3D" parent="CameraRoot" unique_id=1886265677]
 transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 2.5, 6.5)
 fov = 60.0
+
+[node name="ElevatorDoor" type="MeshInstance3D" parent="." unique_id=1411516788]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 8.989541)
+mesh = SubResource("Mesh_ElevatorDoor")
+surface_material_override/0 = SubResource("Mat_ElevatorDoor")

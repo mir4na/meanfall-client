@@ -32,12 +32,10 @@ func _ready() -> void:
 	_reconnect_timer.one_shot = true
 	_reconnect_timer.timeout.connect(_attempt_reconnect)
 	add_child(_reconnect_timer)
-	
-	_try_restore_session()
 
-func _try_restore_session() -> void:
+func restore_session_async() -> bool:
 	if not FileAccess.file_exists(SESSION_FILE):
-		return
+		return false
 	
 	var file = FileAccess.open(SESSION_FILE, FileAccess.READ)
 	var content = file.get_as_text()
@@ -56,16 +54,17 @@ func _try_restore_session() -> void:
 		token = content
 	
 	if token.is_empty():
-		return
+		return false
 		
 	var session = NakamaSession.new(token, false, refresh_token)
 	if session.is_expired():
 		var result = await _client.session_refresh_async(session)
 		if result.is_exception():
-			return
+			return false
 		session = result
 		
-	_on_authenticated(session)
+	await _on_authenticated(session)
+	return true
 
 func _save_session(session: NakamaSession) -> void:
 	var data = {

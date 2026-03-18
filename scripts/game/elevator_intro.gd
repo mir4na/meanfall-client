@@ -1,24 +1,43 @@
 extends Node3D
 
-const ELEVATOR_TRAVEL_DISTANCE := 12.0
-const ELEVATOR_DURATION := 4.0
-const PAUSE_AT_BOTTOM := 1.0
+@onready var player_body: Node3D = $ElevatorShaft/ElevatorCar/PlayerBody
+@onready var camera: Camera3D = $ElevatorShaft/ElevatorCar/PlayerBody/PlayerHead/Camera3D
 
-@onready var elevator_car: Node3D = $ElevatorShaft/ElevatorCar
-@onready var camera: Camera3D = $ElevatorShaft/ElevatorCar/Camera3D
-@onready var anim_player: AnimationPlayer = $AnimationPlayer
+var _cinematic_active := true
+var _yaw := 0.0
+var _pitch := 0.0
+const LOOK_SENSITIVITY := 0.003
+const PITCH_LIMIT := 50.0
 
 func _ready() -> void:
-	elevator_car.position.y = ELEVATOR_TRAVEL_DISTANCE
-	_run_cinematic()
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	camera.current = true
 
-func _run_cinematic() -> void:
-	var tween := create_tween()
-	tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property(elevator_car, "position:y", 0.0, ELEVATOR_DURATION)
-	tween.tween_interval(PAUSE_AT_BOTTOM)
-	tween.finished.connect(_transition_to_game_room)
+	var env: WorldEnvironment = get_node_or_null("WorldEnvironment")
+	if env and env.environment:
+		env.environment.ambient_light_energy = 2.0
+		env.environment.ambient_light_color = Color(0.5, 0.55, 0.75)
 
-func _transition_to_game_room() -> void:
-	await SceneTransition.fade_out()
-	get_tree().change_scene_to_file("res://scenes/game/game_room/game_room.tscn")
+	var lighting = get_node_or_null("ElevatorShaft/ElevatorCar/Lighting")
+	if lighting:
+		for light in lighting.get_children():
+			if light is OmniLight3D:
+				light.light_energy *= 4.0
+				light.omni_range *= 2.0
+
+	SceneTransition.fade_in()
+
+func _on_cinematic_finished() -> void:
+	_cinematic_active = false
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	SceneTransition.fade_to_scene("res://scenes/game/game_room/game_room.tscn")
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not _cinematic_active:
+		return
+	if event is InputEventMouseMotion:
+		_yaw -= event.relative.x * LOOK_SENSITIVITY
+		_pitch -= event.relative.y * LOOK_SENSITIVITY
+		_pitch = clampf(_pitch, deg_to_rad(-PITCH_LIMIT), deg_to_rad(PITCH_LIMIT))
+		player_body.rotation.y = _yaw
+		camera.rotation.x = _pitch

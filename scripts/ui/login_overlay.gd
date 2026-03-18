@@ -102,10 +102,19 @@ func _on_guest_pressed() -> void:
 func _on_email_login_pressed() -> void:
 	_show_panel(email_panel)
 
+func _is_valid_email(email: String) -> bool:
+	var regex := RegEx.new()
+	regex.compile("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")
+	return regex.search(email) != null
+
 func _on_send_otp_pressed() -> void:
-	_current_email = email_input.text
+	_current_email = email_input.text.strip_edges()
 	if _current_email.is_empty():
 		error_label.text = "Email is required"
+		return
+		
+	if not _is_valid_email(_current_email):
+		error_label.text = "Please enter a valid email address"
 		return
 		
 	var result = await NakamaManager.rpc_call("send_otp", {"email": _current_email})

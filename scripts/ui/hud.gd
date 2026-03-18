@@ -15,15 +15,20 @@ const TIMER_WARN_THRESHOLD := 5.0
 @onready var timer_label: Label = $TopBar/TimerLabel
 @onready var players_container: HBoxContainer = $PlayersBar/PlayersContainer
 @onready var guess_panel: Control = $GuessPanel
-@onready var guess_input: LineEdit = $GuessPanel/GuessInput
-@onready var submit_button: Button = $GuessPanel/SubmitButton
-@onready var powerup_button: Button = $GuessPanel/PowerupButton
-@onready var powerup_label: Label = $GuessPanel/PowerupLabel
+@onready var guess_input: LineEdit = $GuessPanel/GuessVBox/GuessInput
+@onready var submit_button: Button = $GuessPanel/GuessVBox/SubmitButton
+@onready var powerup_button: Button = $GuessPanel/GuessVBox/PowerupButton
+@onready var powerup_label: Label = $GuessPanel/GuessVBox/PowerupLabel
 @onready var result_panel: Control = $ResultPanel
-@onready var result_label: Label = $ResultPanel/ResultLabel
+@onready var result_label: RichTextLabel = $ResultPanel/ResultLabel
 @onready var chat_panel: Control = $ChatPanel
 @onready var chat_toggle: Button = $ChatToggleButton
 @onready var player_life_cells: Dictionary = {}
+
+const C_PANEL      := Color(0.10, 0.08, 0.22, 0.95)
+const C_PANEL_EDGE := Color(0.35, 0.20, 0.80, 0.50)
+const C_ACCENT     := Color(0.45, 0.20, 1.00, 1.0)
+const C_WHITE      := Color(1.0,  1.0,  1.0,  1.0)
 
 var _timer_remaining: float = 30.0
 var _is_guessing := false
@@ -39,6 +44,53 @@ func _ready() -> void:
 	result_panel.visible = false
 	guess_panel.visible = false
 	chat_panel.visible = false
+	_apply_styles()
+
+func _apply_styles() -> void:
+	var panels = [guess_panel, result_panel, chat_panel, $PlayersBar]
+	for p in panels:
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = C_PANEL
+		sb.border_color = C_PANEL_EDGE
+		sb.set_border_width_all(1)
+		sb.set_corner_radius_all(12)
+		sb.content_margin_left = 16
+		sb.content_margin_right = 16
+		sb.content_margin_top = 16
+		sb.content_margin_bottom = 16
+		if p is PanelContainer:
+			p.add_theme_stylebox_override("panel", sb)
+
+	var inputs = [guess_input, chat_panel.get_node_or_null("VBox/InputRow/InputField")]
+	for inp in inputs:
+		if not inp: continue
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = Color(0, 0, 0, 0.4)
+		sb.border_color = C_PANEL_EDGE
+		sb.set_border_width_all(1)
+		sb.set_corner_radius_all(8)
+		sb.content_margin_left = 12
+		sb.content_margin_right = 12
+		var sb_f := sb.duplicate() as StyleBoxFlat
+		sb_f.border_color = C_ACCENT
+		inp.add_theme_stylebox_override("normal", sb)
+		inp.add_theme_stylebox_override("focus", sb_f)
+		inp.add_theme_color_override("font_color", C_WHITE)
+
+	var btns = [submit_button, powerup_button, chat_toggle, chat_panel.get_node_or_null("VBox/InputRow/SendButton")]
+	for btn in btns:
+		if not btn: continue
+		var sb_n := StyleBoxFlat.new()
+		sb_n.bg_color = C_ACCENT.darkened(0.2)
+		sb_n.border_color = C_ACCENT
+		sb_n.set_border_width_all(1)
+		sb_n.set_corner_radius_all(8)
+		var sb_h := sb_n.duplicate() as StyleBoxFlat
+		sb_h.bg_color = C_ACCENT.lightened(0.2)
+		btn.add_theme_stylebox_override("normal", sb_n)
+		btn.add_theme_stylebox_override("hover", sb_h)
+		btn.add_theme_stylebox_override("pressed", sb_n)
+		btn.add_theme_color_override("font_color", C_WHITE)
 
 func _process(delta: float) -> void:
 	if not _is_guessing:
