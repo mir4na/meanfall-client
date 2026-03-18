@@ -1,6 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://c6j2k4l5m6n7p"]
+[gd_scene load_steps=5 format=3 uid="uid://c6j2k4l5m6n7p"]
 
-[ext_resource type="Script" path="res://scripts/ui/login_overlay.gd" id="1_a2b3c"]
+[ext_resource type="Script" path="res://scripts/ui/login_overlay.gd" id="1_login"]
+[ext_resource type="Texture2D" uid="uid://b8m3y8y7e1n3x" path="res://icon.svg" id="2_icon"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_right"]
+bg_color = Color(0.06, 0.05, 0.14, 1)
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
 
 [node name="LoginOverlay" type="Control"]
 layout_mode = 3
@@ -9,7 +17,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_a2b3c")
+script = ExtResource("1_login")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
@@ -18,148 +26,259 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.8)
+color = Color(0.04, 0.03, 0.1, 1)
 
-[node name="MainPanel" type="VBoxContainer" parent="."]
+[node name="Center" type="CenterContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 760.0
-offset_top = 440.0
-offset_right = -760.0
-offset_bottom = -440.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 20
 
-[node name="Title" type="Label" parent="MainPanel"]
+[node name="Card" type="PanelContainer" parent="Center"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(960, 600)
 layout_mode = 2
-theme_override_font_sizes/font_size = 48
+theme_override_styles/panel = SubResource("StyleBoxEmpty_bg")
+
+[node name="HBox" type="HBoxContainer" parent="Center/Card"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="LeftGraphic" type="Control" parent="Center/Card/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.2
+
+[node name="BgColor" type="ColorRect" parent="Center/Card/HBox/LeftGraphic"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2, 0.1, 0.5, 1)
+clip_children = 2
+
+[node name="PlaceholderArt" type="TextureRect" parent="Center/Card/HBox/LeftGraphic/BgColor"]
+modulate = Color(1, 1, 1, 0.15)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_icon")
+stretch_mode = 6
+
+[node name="Gradient" type="ColorRect" parent="Center/Card/HBox/LeftGraphic"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.04, 0.03, 0.1, 0.4)
+
+[node name="Margin" type="MarginContainer" parent="Center/Card/HBox/LeftGraphic"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBox" type="VBoxContainer" parent="Center/Card/HBox/LeftGraphic/Margin"]
+layout_mode = 2
+alignment = 2
+
+[node name="Title" type="Label" parent="Center/Card/HBox/LeftGraphic/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
 text = "MEANFALL"
-horizontal_alignment = 1
 
-[node name="GuestButton" type="Button" parent="MainPanel"]
+[node name="Sub" type="Label" parent="Center/Card/HBox/LeftGraphic/Margin/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "Guest Login"
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.8, 0.8, 0.9, 1)
+text = "Join us and stay alive"
 
-[node name="EmailButton" type="Button" parent="MainPanel"]
+[node name="RightForm" type="PanelContainer" parent="Center/Card/HBox"]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "Email Login"
+theme_override_styles/panel = SubResource("StyleBoxFlat_right")
 
-[node name="EmailPanel" type="VBoxContainer" parent="."]
+[node name="Margin" type="MarginContainer" parent="Center/Card/HBox/RightForm"]
+layout_mode = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 64
+
+[node name="VBox" type="VBoxContainer" parent="Center/Card/HBox/RightForm/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="Header" type="Label" parent="Center/Card/HBox/RightForm/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "AUTHENTICATION"
+
+[node name="ErrorLabel" type="Label" parent="Center/Card/HBox/RightForm/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 13
+autowrap_mode = 2
+
+[node name="FormsContainer" type="Control" parent="Center/Card/HBox/RightForm/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MainPanel" type="VBoxContainer" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="GuestBtn" type="Button" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/MainPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+text = "PLAY AS GUEST"
+
+[node name="EmailLoginBtn" type="Button" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/MainPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+text = "EMAIL LOGIN"
+
+[node name="EmailPanel" type="VBoxContainer" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 760.0
-offset_top = 440.0
-offset_right = -760.0
-offset_bottom = -440.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 15
-
-[node name="Label" type="Label" parent="EmailPanel"]
-layout_mode = 2
-text = "Enter Email"
-horizontal_alignment = 1
-
-[node name="EmailInput" type="LineEdit" parent="EmailPanel"]
-layout_mode = 2
-placeholder_text = "email@example.com"
+theme_override_constants/separation = 16
 alignment = 1
 
-[node name="SendOtpButton" type="Button" parent="EmailPanel"]
+[node name="EmailInput" type="LineEdit" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/EmailPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
-text = "Send OTP"
+placeholder_text = "Enter email address"
 
-[node name="BackButton" type="Button" parent="EmailPanel"]
+[node name="SendOtpBtn" type="Button" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/EmailPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+text = "CONTINUE"
+
+[node name="BackBtn1" type="Button" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/EmailPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 text = "Back"
 
-[node name="OtpPanel" type="VBoxContainer" parent="."]
+[node name="OtpPanel" type="VBoxContainer" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 760.0
-offset_top = 440.0
-offset_right = -760.0
-offset_bottom = -440.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 15
-
-[node name="Label" type="Label" parent="OtpPanel"]
-layout_mode = 2
-text = "Enter OTP"
-horizontal_alignment = 1
-
-[node name="OtpInput" type="LineEdit" parent="OtpPanel"]
-layout_mode = 2
-placeholder_text = "6-digit code"
+theme_override_constants/separation = 16
 alignment = 1
-max_length = 6
 
-[node name="VerifyOtpButton" type="Button" parent="OtpPanel"]
+[node name="Label" type="Label" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/OtpPanel"]
 layout_mode = 2
-text = "Verify"
+theme_override_colors/font_color = Color(0.6, 0.6, 0.7, 1)
+theme_override_font_sizes/font_size = 13
+text = "Check your email for the code"
 
-[node name="RegisterPanel" type="VBoxContainer" parent="."]
+[node name="OtpInput" type="LineEdit" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/OtpPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+placeholder_text = "Enter OTP code"
+
+[node name="VerifyOtpBtn" type="Button" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/OtpPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+text = "VERIFY"
+
+[node name="BackBtn2" type="Button" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/OtpPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Back"
+
+[node name="RegisterPanel" type="VBoxContainer" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 760.0
-offset_top = 390.0
-offset_right = -760.0
-offset_bottom = -390.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 15
+theme_override_constants/separation = 16
+alignment = 1
 
-[node name="Label" type="Label" parent="RegisterPanel"]
+[node name="RegLabel" type="Label" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/RegisterPanel"]
+unique_name_in_owner = true
 layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.7, 1)
+theme_override_font_sizes/font_size = 13
 text = "Complete Profile"
-horizontal_alignment = 1
 
-[node name="PasswordInput" type="LineEdit" parent="RegisterPanel"]
-layout_mode = 2
-placeholder_text = "Password (min 8 chars)"
-alignment = 1
-secret = true
-
-[node name="UsernameInput" type="LineEdit" parent="RegisterPanel"]
+[node name="UsernameInput" type="LineEdit" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/RegisterPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 placeholder_text = "Username"
-alignment = 1
 
-[node name="FinishButton" type="Button" parent="RegisterPanel"]
+[node name="PasswordInput" type="LineEdit" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/RegisterPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
-text = "Finish"
+placeholder_text = "Password (min 8 chars)"
+secret = true
 
-[node name="ErrorLabel" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -150.0
-offset_bottom = -120.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_colors/font_color = Color(1, 0, 0, 1)
-horizontal_alignment = 1
+[node name="FinishBtn" type="Button" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/RegisterPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+text = "FINISH"
 
-[connection signal="pressed" from="MainPanel/GuestButton" to="." method="_on_guest_pressed"]
-[connection signal="pressed" from="MainPanel/EmailButton" to="." method="_on_email_login_pressed"]
-[connection signal="pressed" from="EmailPanel/SendOtpButton" to="." method="_on_send_otp_pressed"]
-[connection signal="pressed" from="EmailPanel/BackButton" to="." method="_on_back_pressed"]
-[connection signal="pressed" from="OtpPanel/VerifyOtpButton" to="." method="_on_verify_otp_pressed"]
-[connection signal="pressed" from="RegisterPanel/FinishButton" to="." method="_on_finish_auth_pressed"]
+[connection signal="pressed" from="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/MainPanel/GuestBtn" to="." method="_on_guest_pressed"]
+[connection signal="pressed" from="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/MainPanel/EmailLoginBtn" to="." method="_on_email_login_pressed"]
+[connection signal="pressed" from="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/EmailPanel/SendOtpBtn" to="." method="_on_send_otp_pressed"]
+[connection signal="pressed" from="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/EmailPanel/BackBtn1" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/OtpPanel/VerifyOtpBtn" to="." method="_on_verify_otp_pressed"]
+[connection signal="pressed" from="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/OtpPanel/BackBtn2" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/RegisterPanel/FinishBtn" to="." method="_on_finish_auth_pressed"]

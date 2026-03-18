@@ -40,13 +40,25 @@ func _try_restore_session() -> void:
 		return
 	
 	var file = FileAccess.open(SESSION_FILE, FileAccess.READ)
-	var token = file.get_as_text()
+	var content = file.get_as_text()
 	file.close()
+	
+	var token: String = ""
+	var refresh_token: String = ""
+	
+	if content.begins_with("{"):
+		var data = JSON.parse_string(content)
+		if data is Dictionary:
+			token = data.get("token", "")
+			refresh_token = data.get("refresh_token", "")
+	else:
+		# Fallback for old simple string token
+		token = content
 	
 	if token.is_empty():
 		return
 		
-	var session = NakamaSession.new(token)
+	var session = NakamaSession.new(token, false, refresh_token)
 	if session.is_expired():
 		var result = await _client.session_refresh_async(session)
 		if result.is_exception():
@@ -56,8 +68,12 @@ func _try_restore_session() -> void:
 	_on_authenticated(session)
 
 func _save_session(session: NakamaSession) -> void:
+	var data = {
+		"token": session.token,
+		"refresh_token": session.refresh_token
+	}
 	var file = FileAccess.open(SESSION_FILE, FileAccess.WRITE)
-	file.store_string(session.token)
+	file.store_string(JSON.stringify(data))
 	file.close()
 
 func _clear_session() -> void:

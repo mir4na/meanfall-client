@@ -47,7 +47,7 @@ func _on_back_pressed() -> void:
 
 func _on_logout_pressed() -> void:
 	NakamaManager.logout()
-	SceneTransition.fade_to_scene("res://scenes/ui/main_menu/main_menu.tscn")
+	SceneTransition.fade_to_scene("res://scenes/ui/login_overlay.tscn")
 
 func _on_link_pressed() -> void:
 	var overlay = load("res://scenes/ui/login_overlay.tscn").instantiate()

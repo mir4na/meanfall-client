@@ -13,7 +13,7 @@ config_version=5
 config/name="MEANFALL"
 config/description="Online multiplayer number guessing game"
 config/tags=PackedStringArray("3d", "multiplayer", "online")
-run/main_scene="res://scenes/ui/main_menu/main_menu.tscn"
+run/main_scene="res://scenes/ui/login_overlay.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
