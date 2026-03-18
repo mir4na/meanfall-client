@@ -3,6 +3,12 @@ extends Control
 func _ready() -> void:
 	_animate_in()
 	NakamaManager.session_connected.connect(_on_session_connected)
+	if GameState.session == null:
+		_show_login_overlay()
+
+func _show_login_overlay() -> void:
+	var overlay = load("res://scenes/ui/login_overlay.tscn").instantiate()
+	add_child(overlay)
 
 func _animate_in() -> void:
 	modulate.a = 0.0

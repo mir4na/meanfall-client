@@ -1,0 +1,165 @@
+[gd_scene load_steps=2 format=3 uid="uid://c6j2k4l5m6n7p"]
+
+[ext_resource type="Script" path="res://scripts/ui/login_overlay.gd" id="1_a2b3c"]
+
+[node name="LoginOverlay" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_a2b3c")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.8)
+
+[node name="MainPanel" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 760.0
+offset_top = 440.0
+offset_right = -760.0
+offset_bottom = -440.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="MainPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "MEANFALL"
+horizontal_alignment = 1
+
+[node name="GuestButton" type="Button" parent="MainPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Guest Login"
+
+[node name="EmailButton" type="Button" parent="MainPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Email Login"
+
+[node name="EmailPanel" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 760.0
+offset_top = 440.0
+offset_right = -760.0
+offset_bottom = -440.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+
+[node name="Label" type="Label" parent="EmailPanel"]
+layout_mode = 2
+text = "Enter Email"
+horizontal_alignment = 1
+
+[node name="EmailInput" type="LineEdit" parent="EmailPanel"]
+layout_mode = 2
+placeholder_text = "email@example.com"
+alignment = 1
+
+[node name="SendOtpButton" type="Button" parent="EmailPanel"]
+layout_mode = 2
+text = "Send OTP"
+
+[node name="BackButton" type="Button" parent="EmailPanel"]
+layout_mode = 2
+text = "Back"
+
+[node name="OtpPanel" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 760.0
+offset_top = 440.0
+offset_right = -760.0
+offset_bottom = -440.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+
+[node name="Label" type="Label" parent="OtpPanel"]
+layout_mode = 2
+text = "Enter OTP"
+horizontal_alignment = 1
+
+[node name="OtpInput" type="LineEdit" parent="OtpPanel"]
+layout_mode = 2
+placeholder_text = "6-digit code"
+alignment = 1
+max_length = 6
+
+[node name="VerifyOtpButton" type="Button" parent="OtpPanel"]
+layout_mode = 2
+text = "Verify"
+
+[node name="RegisterPanel" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 760.0
+offset_top = 390.0
+offset_right = -760.0
+offset_bottom = -390.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+
+[node name="Label" type="Label" parent="RegisterPanel"]
+layout_mode = 2
+text = "Complete Profile"
+horizontal_alignment = 1
+
+[node name="PasswordInput" type="LineEdit" parent="RegisterPanel"]
+layout_mode = 2
+placeholder_text = "Password (min 8 chars)"
+alignment = 1
+secret = true
+
+[node name="UsernameInput" type="LineEdit" parent="RegisterPanel"]
+layout_mode = 2
+placeholder_text = "Username"
+alignment = 1
+
+[node name="FinishButton" type="Button" parent="RegisterPanel"]
+layout_mode = 2
+text = "Finish"
+
+[node name="ErrorLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -150.0
+offset_bottom = -120.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+horizontal_alignment = 1
+
+[connection signal="pressed" from="MainPanel/GuestButton" to="." method="_on_guest_pressed"]
+[connection signal="pressed" from="MainPanel/EmailButton" to="." method="_on_email_login_pressed"]
+[connection signal="pressed" from="EmailPanel/SendOtpButton" to="." method="_on_send_otp_pressed"]
+[connection signal="pressed" from="EmailPanel/BackButton" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="OtpPanel/VerifyOtpButton" to="." method="_on_verify_otp_pressed"]
+[connection signal="pressed" from="RegisterPanel/FinishButton" to="." method="_on_finish_auth_pressed"]

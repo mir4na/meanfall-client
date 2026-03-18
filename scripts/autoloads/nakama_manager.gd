@@ -7,6 +7,8 @@ const NAKAMA_SERVER_KEY := "defaultkey"
 const RECONNECT_DELAY := 3.0
 const MAX_RECONNECT_ATTEMPTS := 5
 
+const SESSION_FILE := "user://nakama_session.save"
+
 signal session_connected(session)
 signal session_failed(message: String)
 signal match_joined(match_id: String)
@@ -14,6 +16,7 @@ signal message_received(op_code: int, data: Dictionary)
 signal disconnected
 signal reconnect_succeeded
 signal reconnect_failed
+signal logout_succeeded
 
 var _client
 var _socket
@@ -27,16 +30,54 @@ func _ready() -> void:
 	_reconnect_timer.one_shot = true
 	_reconnect_timer.timeout.connect(_attempt_reconnect)
 	add_child(_reconnect_timer)
+	
+	_try_restore_session()
+
+func _try_restore_session() -> void:
+	if not FileAccess.file_exists(SESSION_FILE):
+		return
+	
+	var file = FileAccess.open(SESSION_FILE, FileAccess.READ)
+	var token = file.get_as_text()
+	file.close()
+	
+	if token.is_empty():
+		return
+		
+	var session = NakamaSession.restore(token)
+	if session.is_expired():
+		var result = await _client.session_refresh_async(session)
+		if result.is_exception():
+			return
+		session = result
+		
+	_on_authenticated(session)
+
+func _save_session(session: NakamaSession) -> void:
+	var file = FileAccess.open(SESSION_FILE, FileAccess.WRITE)
+	file.store_string(session.token)
+	file.close()
+
+func _clear_session() -> void:
+	if FileAccess.file_exists(SESSION_FILE):
+		DirAccess.remove_absolute(SESSION_FILE)
+	_session = null
+	GameState.session = null
+	GameState.local_player_id = ""
+
+func logout() -> void:
+	_clear_session()
+	if _socket:
+		_socket.close()
+		_socket = null
+	logout_succeeded.emit()
 
 func authenticate_device(device_id: String) -> void:
 	var result = await _client.authenticate_device_async(device_id)
 	if result.is_exception():
 		session_failed.emit(result.get_exception().message)
 		return
-	_session = result
-	GameState.session = _session
-	GameState.local_player_id = _session.user_id
-	session_connected.emit(_session)
+	_on_authenticated(result)
 
 func authenticate_email(email: String, password: String, username: String = "") -> void:
 	var create := username != ""
@@ -44,7 +85,18 @@ func authenticate_email(email: String, password: String, username: String = "") 
 	if result.is_exception():
 		session_failed.emit(result.get_exception().message)
 		return
-	_session = result
+	_on_authenticated(result)
+
+func link_email(email: String, password: String) -> bool:
+	var result = await _client.link_email_async(_session, email, password)
+	if result.is_exception():
+		session_failed.emit(result.get_exception().message)
+		return false
+	return true
+
+func _on_authenticated(session: NakamaSession) -> void:
+	_session = session
+	_save_session(_session)
 	GameState.session = _session
 	GameState.local_player_id = _session.user_id
 	session_connected.emit(_session)

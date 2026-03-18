@@ -64,6 +64,14 @@ custom_minimum_size = Vector2(0, 36)
 [node name="Spacer" type="Control" parent="Center/Panel/VBox"]
 custom_minimum_size = Vector2(0, 16)
 
+[node name="LinkEmailButton" type="Button" parent="Center/Panel/VBox"]
+text = "Link Email Account"
+custom_minimum_size = Vector2(0, 52)
+
+[node name="LogoutButton" type="Button" parent="Center/Panel/VBox"]
+text = "Logout"
+custom_minimum_size = Vector2(0, 52)
+
 [node name="BackButton" type="Button" parent="Center/Panel/VBox"]
 text = "Back"
 custom_minimum_size = Vector2(0, 52)
