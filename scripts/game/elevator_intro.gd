@@ -32,7 +32,8 @@ func _run_sequence() -> void:
 	if elevator_doors:
 		await elevator_doors.open_doors()
 	
-	await get_tree().create_timer(0.4).timeout
+	await get_tree().create_timer(3.0).timeout
+	
 	if cinematic_overlay and cinematic_overlay.material:
 		var tw_bars_out := create_tween()
 		tw_bars_out.tween_method(func(v: float): cinematic_overlay.material.set_shader_parameter("bar_height", v), 0.1, 0.0, 0.4)

@@ -46,7 +46,7 @@ func _spawn_seat_for_player(player_id: String, username: String, lives: int) -> 
 	var seat: Node3D = seat_scene.instantiate()
 	seat.setup(player_id, username, lives)
 	var seat_index := _player_seats.size()
-	var total_seats := maxi(GameState.max_players, 2)
+	var total_seats := 10
 	var angle := (TAU / total_seats) * seat_index
 	seat.position = Vector3(sin(angle) * SEAT_RADIUS, 0.0, cos(angle) * SEAT_RADIUS)
 	seat.rotation.y = -angle

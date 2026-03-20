@@ -481,211 +481,263 @@ omni_range = 4.0
 
 [node name="Chairs" type="Node3D" parent="." unique_id=1329884934]
 
-[node name="Chair_1" type="Node3D" parent="Chairs" unique_id=1402716243]
-transform = Transform3D(-0.99767, 0, 0.06822424, 0, 1, 0, -0.06822424, 0, -0.99767, 0, 0.23, 3.8)
+[node name="Chair_1" type="Node3D" parent="Chairs" unique_id=1316836503]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 0, 0.23, 3.8)
 
-[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_1" unique_id=373139664]
+[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_1" unique_id=1833585963]
 mesh = SubResource("Mesh_ChairSeat")
 
-[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_1" unique_id=2063233915]
+[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_1" unique_id=1269788461]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.305, -0.25)
 mesh = SubResource("Mesh_ChairBack")
 
-[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_1" unique_id=916980038]
+[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_1" unique_id=838534063]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, 0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_1" unique_id=1224490001]
+[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_1" unique_id=928015735]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, 0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_1" unique_id=1634914828]
+[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_1" unique_id=406525]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, -0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_1" unique_id=159088522]
+[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_1" unique_id=294140178]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, -0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="Chair_2" type="Node3D" parent="Chairs" unique_id=365117449]
-transform = Transform3D(-0.698865, 0, -0.715254, 0, 1, 0, 0.715254, 0, -0.698865, 2.687, 0.23, 2.687)
+[node name="Chair_2" type="Node3D" parent="Chairs" unique_id=1530992972]
+transform = Transform3D(-0.87941575, 0, -0.47605413, 0, 1, 0, 0.47605413, 0, -0.87941575, 2.23358, 0.23, 3.07426)
 
-[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_2" unique_id=991234107]
+[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_2" unique_id=1042906364]
 mesh = SubResource("Mesh_ChairSeat")
 
-[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_2" unique_id=943688502]
+[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_2" unique_id=133222857]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.305, -0.25)
 mesh = SubResource("Mesh_ChairBack")
 
-[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_2" unique_id=1081143337]
+[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_2" unique_id=121334879]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, 0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_2" unique_id=97962038]
+[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_2" unique_id=427324496]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, 0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_2" unique_id=585569695]
+[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_2" unique_id=876696525]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, -0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_2" unique_id=493051265]
+[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_2" unique_id=2077312204]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, -0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="Chair_3" type="Node3D" parent="Chairs" unique_id=994961500]
-transform = Transform3D(-0.05813899, 0, -0.9983085, 0, 1, 0, 0.9983085, 0, -0.05813899, 3.8, 0.23, 0)
+[node name="Chair_3" type="Node3D" parent="Chairs" unique_id=218831512]
+transform = Transform3D(-0.38939765, 0, -0.92107046, 0, 1, 0, 0.92107046, 0, -0.38939765, 3.61401, 0.23, 1.17426)
 
-[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_3" unique_id=369954804]
+[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_3" unique_id=1820763011]
 mesh = SubResource("Mesh_ChairSeat")
 
-[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_3" unique_id=794980445]
+[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_3" unique_id=682322841]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.305, -0.25)
 mesh = SubResource("Mesh_ChairBack")
 
-[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_3" unique_id=655396594]
+[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_3" unique_id=1677835472]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, 0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_3" unique_id=49342416]
+[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_3" unique_id=1526996727]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, 0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_3" unique_id=465000728]
+[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_3" unique_id=548719610]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, -0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_3" unique_id=465123795]
+[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_3" unique_id=772158653]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, -0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="Chair_4" type="Node3D" parent="Chairs" unique_id=1694898232]
-transform = Transform3D(0.69802815, 0, -0.7160708, 0, 1, 0, 0.7160708, 0, 0.69802815, 2.687, 0.23, -2.687)
+[node name="Chair_4" type="Node3D" parent="Chairs" unique_id=174940830]
+transform = Transform3D(0.3660792, 0, -0.9305842, 0, 1, 0, 0.9305842, 0, 0.3660792, 3.61401, 0.23, -1.17426)
 
-[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_4" unique_id=388716529]
+[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_4" unique_id=1051310075]
 mesh = SubResource("Mesh_ChairSeat")
 
-[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_4" unique_id=2070621214]
+[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_4" unique_id=1020317338]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.305, -0.25)
 mesh = SubResource("Mesh_ChairBack")
 
-[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_4" unique_id=395421743]
+[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_4" unique_id=740650703]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, 0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_4" unique_id=754906915]
+[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_4" unique_id=991396559]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, 0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_4" unique_id=2106034646]
+[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_4" unique_id=12342971]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, -0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_4" unique_id=1377649254]
+[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_4" unique_id=937233995]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, -0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="Chair_5" type="Node3D" parent="Chairs" unique_id=1863056817]
-transform = Transform3D(0.99996775, 0, -0.008028334, 0, 1, 0, 0.008028334, 0, 0.99996775, 0, 0.23, -3.8)
+[node name="Chair_5" type="Node3D" parent="Chairs" unique_id=1287095373]
+transform = Transform3D(0.7847652, 0, -0.61979276, 0, 1, 0, 0.61979276, 0, 0.7847652, 2.23358, 0.23, -3.07426)
 
-[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_5" unique_id=937404167]
+[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_5" unique_id=873292095]
 mesh = SubResource("Mesh_ChairSeat")
 
-[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_5" unique_id=22594390]
+[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_5" unique_id=302635198]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.305, -0.25)
 mesh = SubResource("Mesh_ChairBack")
 
-[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_5" unique_id=1578560775]
+[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_5" unique_id=1545040546]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, 0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_5" unique_id=1719083492]
+[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_5" unique_id=356177507]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, 0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_5" unique_id=1470188368]
+[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_5" unique_id=535430743]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, -0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_5" unique_id=9641631]
+[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_5" unique_id=1347629468]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, -0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="Chair_6" type="Node3D" parent="Chairs" unique_id=749895288]
-transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, -2.687, 0.23, 2.687)
+[node name="Chair_6" type="Node3D" parent="Chairs" unique_id=1555748755]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.65366e-16, 0.23, -3.8)
 
-[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_6" unique_id=1774485038]
+[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_6" unique_id=2112702904]
 mesh = SubResource("Mesh_ChairSeat")
 
-[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_6" unique_id=1210647575]
+[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_6" unique_id=1789280012]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.305, -0.25)
 mesh = SubResource("Mesh_ChairBack")
 
-[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_6" unique_id=176714030]
+[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_6" unique_id=1279559736]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, 0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_6" unique_id=407638203]
+[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_6" unique_id=1056902879]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, 0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_6" unique_id=378335997]
+[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_6" unique_id=2025861883]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, -0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_6" unique_id=887098401]
+[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_6" unique_id=217244531]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, -0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="Chair_7" type="Node3D" parent="Chairs" unique_id=957218953]
-transform = Transform3D(-0.009686394, 0, 0.9999531, 0, 1, 0, -0.9999531, 0, -0.009686394, -3.8, 0.23, 0)
+[node name="Chair_7" type="Node3D" parent="Chairs" unique_id=1374962323]
+transform = Transform3D(0.7340141, 0, 0.6791339, 0, 1, 0, -0.6791339, 0, 0.7340141, -2.23358, 0.23, -3.07426)
 
-[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_7" unique_id=2003507932]
+[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_7" unique_id=2058677105]
 mesh = SubResource("Mesh_ChairSeat")
 
-[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_7" unique_id=1725492435]
+[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_7" unique_id=1500548029]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.305, -0.25)
 mesh = SubResource("Mesh_ChairBack")
 
-[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_7" unique_id=1813807662]
+[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_7" unique_id=369447890]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, 0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_7" unique_id=2047821748]
+[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_7" unique_id=2011609554]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, 0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_7" unique_id=1847332213]
+[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_7" unique_id=636632483]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, -0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_7" unique_id=347263498]
+[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_7" unique_id=1822443090]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, -0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="Chair_8" type="Node3D" parent="Chairs" unique_id=1474623949]
-transform = Transform3D(0.67226374, 0, 0.7403122, 0, 1, 0, -0.7403122, 0, 0.67226374, -2.687, 0.23, -2.687)
+[node name="Chair_8" type="Node3D" parent="Chairs" unique_id=1289885773]
+transform = Transform3D(0.32637697, 0, 0.94524026, 0, 1, 0, -0.94524026, 0, 0.32637697, -3.61401, 0.23, -1.17426)
 
-[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_8" unique_id=1748131515]
+[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_8" unique_id=42141017]
 mesh = SubResource("Mesh_ChairSeat")
 
-[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_8" unique_id=1059854343]
+[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_8" unique_id=1166953825]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.305, -0.25)
 mesh = SubResource("Mesh_ChairBack")
 
-[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_8" unique_id=1074071105]
+[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_8" unique_id=1315962586]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, 0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_8" unique_id=2002351485]
+[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_8" unique_id=1784362845]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, 0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_8" unique_id=711449933]
+[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_8" unique_id=317669710]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, -0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
-[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_8" unique_id=972559076]
+[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_8" unique_id=1415570317]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="Chair_9" type="Node3D" parent="Chairs" unique_id=1568054857]
+transform = Transform3D(-0.36356053, 0, 0.93157107, 0, 1, 0, -0.93157107, 0, -0.36356053, -3.61401, 0.23, 1.17426)
+
+[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_9" unique_id=1558052844]
+mesh = SubResource("Mesh_ChairSeat")
+
+[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_9" unique_id=1068470160]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.305, -0.25)
+mesh = SubResource("Mesh_ChairBack")
+
+[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_9" unique_id=1890181920]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_9" unique_id=618339864]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_9" unique_id=1051082534]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_9" unique_id=649428818]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="Chair_10" type="Node3D" parent="Chairs" unique_id=38961127]
+transform = Transform3D(-0.7231959, 0, 0.6906426, 0, 1, 0, -0.6906426, 0, -0.7231959, -2.23358, 0.23, 3.07426)
+
+[node name="Seat" type="MeshInstance3D" parent="Chairs/Chair_10" unique_id=1345140730]
+mesh = SubResource("Mesh_ChairSeat")
+
+[node name="Back" type="MeshInstance3D" parent="Chairs/Chair_10" unique_id=1160175095]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.305, -0.25)
+mesh = SubResource("Mesh_ChairBack")
+
+[node name="LegFL" type="MeshInstance3D" parent="Chairs/Chair_10" unique_id=548786170]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegFR" type="MeshInstance3D" parent="Chairs/Chair_10" unique_id=1778465048]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, 0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBL" type="MeshInstance3D" parent="Chairs/Chair_10" unique_id=346568339]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.23, -0.2)
+mesh = SubResource("Mesh_ChairLeg")
+
+[node name="LegBR" type="MeshInstance3D" parent="Chairs/Chair_10" unique_id=565510819]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.23, -0.2)
 mesh = SubResource("Mesh_ChairLeg")
 
