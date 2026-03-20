@@ -238,12 +238,22 @@ cast_shadow = 0
 mesh = SubResource("Mesh_ShaftWallSide")
 
 [node name="Cable_A" type="MeshInstance3D" parent="ElevatorShaft" unique_id=588884572]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4176698, 0, -0.3)
+transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, -1.4176698, 0, -0.3)
+cast_shadow = 0
+mesh = SubResource("Mesh_Cable")
+
+[node name="Cable_B" type="MeshInstance3D" parent="ElevatorShaft" unique_id=1544128301]
+transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, 1.2550704, 0, -0.3)
 cast_shadow = 0
 mesh = SubResource("Mesh_Cable")
 
 [node name="Cable_C" type="MeshInstance3D" parent="ElevatorShaft" unique_id=2029182970]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.374224, 0, 0.3)
+transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, -1.374224, 0, 0.3)
+cast_shadow = 0
+mesh = SubResource("Mesh_Cable")
+
+[node name="Cable_D" type="MeshInstance3D" parent="ElevatorShaft" unique_id=152956257]
+transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, 1.3104882, 0, 0.628229)
 cast_shadow = 0
 mesh = SubResource("Mesh_Cable")
 
