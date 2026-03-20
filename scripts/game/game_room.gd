@@ -22,7 +22,6 @@ func _reveal_camera() -> void:
 	tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tween.tween_property(camera, "position", Vector3(0, 1.5, 5.0), 2.0)
 	tween.parallel().tween_property(camera, "rotation_degrees:x", -20.0, 2.0)
-	tween.tween_callback(SceneTransition.fade_in)
 
 func _add_hud() -> void:
 	var hud_scene := load(HUD_SCENE)

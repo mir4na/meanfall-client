@@ -1,7 +1,10 @@
 extends Node3D
 
-@onready var player_body: Node3D = $ElevatorShaft/ElevatorCar/PlayerBody
-@onready var camera: Camera3D = $ElevatorShaft/ElevatorCar/PlayerBody/PlayerHead/Camera3D
+@onready var elevator: Node3D = $ElevatorShaft/ElevatorCar
+@onready var elevator_doors: Node3D = $ElevatorShaft/ElevatorCar/ElevatorDoors
+@onready var cinematic_overlay: ColorRect = $CinematicCanvas/CinematicOverlay
+
+@onready var camera: Camera3D = $ElevatorShaft/ElevatorCar/PlayerSpawn/Camera3D
 
 var _cinematic_active := true
 var _yaw := 0.0
@@ -12,20 +15,30 @@ const PITCH_LIMIT := 50.0
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera.current = true
-
-	var env: WorldEnvironment = get_node_or_null("WorldEnvironment")
-	if env and env.environment:
-		env.environment.ambient_light_energy = 2.0
-		env.environment.ambient_light_color = Color(0.5, 0.55, 0.75)
-
-	var lighting = get_node_or_null("ElevatorShaft/ElevatorCar/Lighting")
-	if lighting:
-		for light in lighting.get_children():
-			if light is OmniLight3D:
-				light.light_energy *= 4.0
-				light.omni_range *= 2.0
-
 	SceneTransition.fade_in()
+	
+	_run_sequence()
+
+func _run_sequence() -> void:
+	if cinematic_overlay and cinematic_overlay.material:
+		var tw_bars_in := create_tween()
+		tw_bars_in.tween_method(func(v: float): cinematic_overlay.material.set_shader_parameter("bar_height", v), 0.0, 0.1, 0.5)
+	
+	if elevator:
+		await elevator.descend()
+	
+	await get_tree().create_timer(0.3).timeout
+	
+	if elevator_doors:
+		await elevator_doors.open_doors()
+	
+	await get_tree().create_timer(0.4).timeout
+	if cinematic_overlay and cinematic_overlay.material:
+		var tw_bars_out := create_tween()
+		tw_bars_out.tween_method(func(v: float): cinematic_overlay.material.set_shader_parameter("bar_height", v), 0.1, 0.0, 0.4)
+		await tw_bars_out.finished
+	
+	_on_cinematic_finished()
 
 func _on_cinematic_finished() -> void:
 	_cinematic_active = false
@@ -39,5 +52,5 @@ func _unhandled_input(event: InputEvent) -> void:
 		_yaw -= event.relative.x * LOOK_SENSITIVITY
 		_pitch -= event.relative.y * LOOK_SENSITIVITY
 		_pitch = clampf(_pitch, deg_to_rad(-PITCH_LIMIT), deg_to_rad(PITCH_LIMIT))
-		player_body.rotation.y = _yaw
+		camera.rotation.y = _yaw
 		camera.rotation.x = _pitch

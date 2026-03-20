@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://dw2js5p60y7cy"]
 
 [ext_resource type="Script" uid="uid://8ubee8h0dyan" path="res://scripts/game/elevator_intro.gd" id="1_elevator"]
-[ext_resource type="PackedScene" uid="uid://qfgio7h4utge" path="res://scenes/game/game_room/game_room.tscn" id="2_eikqt"]
 [ext_resource type="Shader" uid="uid://b2ncn4t23oy6f" path="res://shaders/cinematic.gdshader" id="3_shader_cinematic"]
+[ext_resource type="Script" path="res://scripts/game/elevator.gd" id="elevator_scr"]
+[ext_resource type="Script" path="res://scripts/game/elevator_door.gd" id="door_scr"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.02, 0.02, 0.04, 1)
@@ -16,8 +17,8 @@ sky_material = SubResource("ProceduralSkyMaterial_1")
 background_mode = 2
 sky = SubResource("Sky_1")
 ambient_light_source = 2
-ambient_light_color = Color(0.1, 0.12, 0.18, 1)
-ambient_light_energy = 0.3
+ambient_light_color = Color(0.5, 0.55, 0.75, 1)
+ambient_light_energy = 2.0
 tonemap_mode = 2
 glow_enabled = true
 glow_intensity = 0.6
@@ -205,7 +206,7 @@ size = Vector3(2.5, 2.8, 0.06)
 [sub_resource type="ShaderMaterial" id="ShaderMat_cinematic"]
 shader = ExtResource("3_shader_cinematic")
 shader_parameter/bar_height = 0.0
-shader_parameter/fade_alpha = 1.0
+shader_parameter/fade_alpha = 0.0
 
 [sub_resource type="Animation" id="Animation_intro"]
 resource_name = "intro"
@@ -304,6 +305,9 @@ _data = {
 
 [node name="ElevatorIntro" type="Node3D" unique_id=1776777101]
 script = ExtResource("1_elevator")
+elevator = NodePath("ElevatorShaft/ElevatorCar")
+elevator_doors = NodePath("ElevatorShaft/ElevatorCar/ElevatorDoors")
+cinematic_overlay = NodePath("CinematicCanvas/CinematicOverlay")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1002278955]
 environment = SubResource("Environment_1")
@@ -353,6 +357,9 @@ mesh = SubResource("Mesh_Cable")
 
 [node name="ElevatorCar" type="Node3D" parent="ElevatorShaft" unique_id=488140327]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 0)
+script = ExtResource("elevator_scr")
+descend_duration = 4.5
+target_y = 0.0
 
 [node name="Floor" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=187763838]
 mesh = SubResource("Mesh_Floor")
@@ -582,54 +589,57 @@ mesh = SubResource("Mesh_DoorGlow")
 [node name="CeilingOmni" type="OmniLight3D" parent="ElevatorShaft/ElevatorCar/Lighting" unique_id=1482760997]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.7, 0)
 light_color = Color(0.85, 0.92, 1, 1)
-light_energy = 2.5
+light_energy = 10.0
 shadow_enabled = true
-omni_range = 6.0
+omni_range = 12.0
 
 [node name="GlowAmbientBlue" type="OmniLight3D" parent="ElevatorShaft/ElevatorCar/Lighting" unique_id=200980037]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, -1.2)
 light_color = Color(0.3, 0.5, 1, 1)
-light_energy = 0.8
-omni_range = 3.0
+light_energy = 3.2
+omni_range = 6.0
 
 [node name="GlowAmbientWarm" type="OmniLight3D" parent="ElevatorShaft/ElevatorCar/Lighting" unique_id=1545287948]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3, 1.2, 0.3)
 light_color = Color(1, 0.5, 0.2, 1)
-light_energy = 0.5
-omni_range = 2.5
+light_energy = 2.0
 
-[node name="PlayerBody" type="Node3D" parent="ElevatorShaft/ElevatorCar" unique_id=427775606]
+[node name="PlayerSpawn" type="Marker3D" parent="ElevatorShaft/ElevatorCar" unique_id=427775606]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.6)
 
-[node name="PlayerHead" type="Node3D" parent="ElevatorShaft/ElevatorCar/PlayerBody" unique_id=1389913228]
+[node name="Camera3D" type="Camera3D" parent="ElevatorShaft/ElevatorCar/PlayerSpawn" unique_id=645595310]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
 
-[node name="Camera3D" type="Camera3D" parent="ElevatorShaft/ElevatorCar/PlayerBody/PlayerHead" unique_id=645595310]
+[node name="ElevatorDoors" type="Node3D" parent="ElevatorShaft/ElevatorCar"]
+script = ExtResource("door_scr")
+open_duration = 1.3
+left_gate_path = NodePath("GateLeft")
+right_gate_path = NodePath("GateRight")
+open_distance = 1.3
 
-[node name="GateLeft" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=1925187117]
+[node name="GateLeft" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/ElevatorDoors" unique_id=1925187117]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.625, 1.5836571, -1.4223263)
-visible = false
 mesh = SubResource("Mesh_GatePanel")
 surface_material_override/0 = SubResource("Mat_Gate")
 
-[node name="GlowStripLeft" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/GateLeft" unique_id=336450085]
+[node name="GlowStripLeft" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/ElevatorDoors/GateLeft" unique_id=336450085]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.625, 0, 0)
 mesh = SubResource("Mesh_GateGlowStrip")
 surface_material_override/0 = SubResource("Mat_GateGlow")
 
-[node name="GateRight" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=2058429310]
+[node name="GateRight" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/ElevatorDoors" unique_id=2058429310]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.625, 1.657699, -1.3205979)
-visible = false
 mesh = SubResource("Mesh_GatePanel")
 surface_material_override/0 = SubResource("Mat_Gate")
 
-[node name="GlowStripRight" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/GateRight" unique_id=2143384569]
+[node name="GlowStripRight" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/ElevatorDoors/GateRight" unique_id=2143384569]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.625, 0, 0)
 mesh = SubResource("Mesh_GateGlowStrip")
 surface_material_override/0 = SubResource("Mat_GateGlow")
 
 [node name="SingleDoor" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=1453424806]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5143849, -1.4233488)
+visible = false
 mesh = SubResource("Mesh_SingleDoorBox")
 surface_material_override/0 = SubResource("Mat_Gate")
 
@@ -645,9 +655,3 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1156074412]
-libraries/ = SubResource("AnimationLibrary_intro")
-autoplay = &"intro"
-
-[node name="GameRoom" parent="." unique_id=1856797118 instance=ExtResource("2_eikqt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -20.194082, -10.521748)
