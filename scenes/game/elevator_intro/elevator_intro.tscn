@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://8ubee8h0dyan" path="res://scripts/game/elevator_intro.gd" id="1_elevator"]
 [ext_resource type="Shader" uid="uid://b2ncn4t23oy6f" path="res://shaders/cinematic.gdshader" id="3_shader_cinematic"]
-[ext_resource type="Script" path="res://scripts/game/elevator.gd" id="elevator_scr"]
-[ext_resource type="Script" path="res://scripts/game/elevator_door.gd" id="door_scr"]
+[ext_resource type="Script" uid="uid://u34q5mw0r56l" path="res://scripts/game/elevator_door.gd" id="door_scr"]
+[ext_resource type="Script" uid="uid://0e27rbln8ayo" path="res://scripts/game/elevator.gd" id="elevator_scr"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.02, 0.02, 0.04, 1)
@@ -208,106 +208,8 @@ shader = ExtResource("3_shader_cinematic")
 shader_parameter/bar_height = 0.0
 shader_parameter/fade_alpha = 0.0
 
-[sub_resource type="Animation" id="Animation_intro"]
-resource_name = "intro"
-length = 8.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("ElevatorShaft/ElevatorCar:position:y")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 4.5, 4.6, 4.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [12.0, 0.0, -0.06, 0.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("CinematicCanvas/CinematicOverlay:material:shader_parameter/bar_height")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5, 6, 6.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [0.0, 0.1, 0.1, 0.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("CinematicCanvas/CinematicOverlay:material:shader_parameter/fade_alpha")
-tracks/2/interp = 2
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [1.0, 0.0]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("ElevatorShaft/ElevatorCar/SingleDoor:position:x")
-tracks/3/interp = 2
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 4.8, 6),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [0.0, 0.0, -2.5]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("ElevatorShaft/ElevatorCar/GateLeft:position:x")
-tracks/4/interp = 2
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 6.2, 7.5),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [-0.625, -0.625, -1.925]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("ElevatorShaft/ElevatorCar/GateRight:position:x")
-tracks/5/interp = 2
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 6.2, 7.5),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [0.625, 0.625, 1.925]
-}
-tracks/6/type = "method"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath(".")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(8.4),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"_on_cinematic_finished"
-}]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_intro"]
-_data = {
-&"intro": SubResource("Animation_intro")
-}
-
 [node name="ElevatorIntro" type="Node3D" unique_id=1776777101]
 script = ExtResource("1_elevator")
-elevator = NodePath("ElevatorShaft/ElevatorCar")
-elevator_doors = NodePath("ElevatorShaft/ElevatorCar/ElevatorDoors")
-cinematic_overlay = NodePath("CinematicCanvas/CinematicOverlay")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1002278955]
 environment = SubResource("Environment_1")
@@ -315,12 +217,12 @@ environment = SubResource("Environment_1")
 [node name="ElevatorShaft" type="Node3D" parent="." unique_id=1967934514]
 
 [node name="ShaftWallBack" type="MeshInstance3D" parent="ElevatorShaft" unique_id=153645208]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, -1.7, 0, 0)
 cast_shadow = 0
 mesh = SubResource("Mesh_ShaftWall")
 
 [node name="ShaftWallFront" type="MeshInstance3D" parent="ElevatorShaft" unique_id=2126952823]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, 1.7, 0, 0)
 cast_shadow = 0
 mesh = SubResource("Mesh_ShaftWall")
 
@@ -331,7 +233,7 @@ cast_shadow = 0
 mesh = SubResource("Mesh_ShaftWallSide")
 
 [node name="ShaftWallRight" type="MeshInstance3D" parent="ElevatorShaft" unique_id=991080873]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.7)
+transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, 0, 0, 1.7)
 cast_shadow = 0
 mesh = SubResource("Mesh_ShaftWallSide")
 
@@ -340,28 +242,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4176698, 0, -0.3)
 cast_shadow = 0
 mesh = SubResource("Mesh_Cable")
 
-[node name="Cable_B" type="MeshInstance3D" parent="ElevatorShaft" unique_id=1544128301]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2550704, 0, -0.3)
-cast_shadow = 0
-mesh = SubResource("Mesh_Cable")
-
 [node name="Cable_C" type="MeshInstance3D" parent="ElevatorShaft" unique_id=2029182970]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.374224, 0, 0.3)
 cast_shadow = 0
 mesh = SubResource("Mesh_Cable")
 
-[node name="Cable_D" type="MeshInstance3D" parent="ElevatorShaft" unique_id=152956257]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3104882, 0, 0.628229)
-cast_shadow = 0
-mesh = SubResource("Mesh_Cable")
-
 [node name="ElevatorCar" type="Node3D" parent="ElevatorShaft" unique_id=488140327]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 25.840164, 0)
 script = ExtResource("elevator_scr")
-descend_duration = 4.5
-target_y = 0.0
 
 [node name="Floor" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=187763838]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.1, 0, 0, 0)
 mesh = SubResource("Mesh_Floor")
 
 [node name="FloorEdgeFront" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=1970311237]
@@ -381,15 +272,15 @@ transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1.47, 0.06, 0)
 mesh = SubResource("Mesh_FloorEdge")
 
 [node name="WallBack" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=1323920977]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.97, -1.48)
+transform = Transform3D(1, 0, 0, 0, 0.28, 0, 0, 0, 1, 0, 3.3829174, -1.48)
 mesh = SubResource("Mesh_WallPanel")
 
 [node name="WallLeft" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=499997141]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1.48, 1.97, 0)
+transform = Transform3D(-4.371139e-08, 0, 1.1, 0, 1, 0, -1, 0, -4.8082526e-08, -1.4802258, 1.9700003, -0.0029358268)
 mesh = SubResource("Mesh_WallPanel")
 
 [node name="WallRight" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=1533716301]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1.48, 1.97, 0)
+transform = Transform3D(-4.371139e-08, 0, 1.5, 0, 1, 0, -1, 0, -6.556708e-08, 1.4802303, 1.9756222, -0.005958557)
 mesh = SubResource("Mesh_WallPanel")
 
 [node name="TrimBottomBack" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=859630565]
@@ -401,7 +292,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.84, -1.42)
 mesh = SubResource("Mesh_WallTrimH")
 
 [node name="TrimMidBack" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=1860860101]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.97, -1.42)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.4799442, -1.443172)
 mesh = SubResource("Mesh_WallTrimH")
 
 [node name="TrimBottomLeft" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=148833133]
@@ -429,7 +320,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.47, 1.97, -1.47)
 mesh = SubResource("Mesh_WallTrimV")
 
 [node name="TrimCornerLL" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=2089079737]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.47, 1.97, 1.47)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0875709, 1.9699993, 1.47)
 mesh = SubResource("Mesh_WallTrimV")
 
 [node name="TrimCornerLR" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=1052430075]
@@ -437,7 +328,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.47, 1.97, 1.47)
 mesh = SubResource("Mesh_WallTrimV")
 
 [node name="GlowStripBackLow" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=637096725]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, -1.44)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9058056, -1.44)
 mesh = SubResource("Mesh_GlowStrip")
 
 [node name="GlowStripBackHigh" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=836811971]
@@ -469,7 +360,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.44, 1.97, -0.8)
 mesh = SubResource("Mesh_GlowStripV")
 
 [node name="Ceiling" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=1896831044]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.92, 0)
+transform = Transform3D(1.05, 0, 0, 0, 1.05, 0, 0, 0, 1.05, 0, 3.92, 0)
 mesh = SubResource("Mesh_Ceiling")
 
 [node name="CeilingRib1" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=461398934]
@@ -492,7 +383,7 @@ mesh = SubResource("Mesh_CeilingLight")
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1.35, 0.9, 0)
 
 [node name="Rail" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/HandrailLeft" unique_id=1616323298]
-transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0.123179525, -0.18671227, -0.044023752)
 mesh = SubResource("Mesh_Handrail")
 
 [node name="PostA" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/HandrailLeft" unique_id=1598528114]
@@ -500,52 +391,41 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.35, -0.9)
 mesh = SubResource("Mesh_HandrailPost")
 
 [node name="PostB" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/HandrailLeft" unique_id=1695013620]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.35, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55742455, 0)
 mesh = SubResource("Mesh_HandrailPost")
 
 [node name="PostC" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/HandrailLeft" unique_id=1877725440]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.35000002, 0.20680821)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4399984, -0.53457355, -0.0006593466)
 mesh = SubResource("Mesh_HandrailPost")
 
 [node name="HandrailBack" type="Node3D" parent="ElevatorShaft/ElevatorCar" unique_id=1284418650]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -1.35)
 
-[node name="Rail" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/HandrailBack" unique_id=1658678762]
-mesh = SubResource("Mesh_Handrail")
-
 [node name="PostA" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/HandrailBack" unique_id=1293468462]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, -0.35, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3976625, -0.5203953, 2.5037532)
 mesh = SubResource("Mesh_HandrailPost")
 
 [node name="PostB" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/HandrailBack" unique_id=444950874]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.35, 0)
-mesh = SubResource("Mesh_HandrailPost")
-
-[node name="PostC" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/HandrailBack" unique_id=1102346399]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, -0.35, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3329521, -0.35000038, 0.4269141)
 mesh = SubResource("Mesh_HandrailPost")
 
 [node name="HandrailRight" type="Node3D" parent="ElevatorShaft/ElevatorCar" unique_id=749462905]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1.35, 0.9, 0)
 
 [node name="Rail" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/HandrailRight" unique_id=987826569]
-transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("Mesh_Handrail")
 
 [node name="PostA" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/HandrailRight" unique_id=110863721]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.35000002, -0.16788709)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22493821, -0.35000038, -0.0008227825)
 mesh = SubResource("Mesh_HandrailPost")
 
 [node name="PostB" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/HandrailRight" unique_id=1841551503]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.35, 0)
 mesh = SubResource("Mesh_HandrailPost")
 
-[node name="PostC" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/HandrailRight" unique_id=386042435]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.35, 0.9)
-mesh = SubResource("Mesh_HandrailPost")
-
 [node name="ControlPanel" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=1016034341]
-transform = Transform3D(-0.069930576, 0, -0.99755186, 0, 1, 0, 0.99755186, 0, -0.069930576, 1.4174197, 1.2, 0.3)
+transform = Transform3D(-0.069930576, 0, -0.99755186, 0, 1, 0, 0.99755186, 0, -0.069930576, 1.4174197, 1.3378143, 0.3)
 mesh = SubResource("Mesh_ControlPanel")
 
 [node name="Btn1" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/ControlPanel" unique_id=1317245815]
@@ -610,15 +490,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.6)
 [node name="Camera3D" type="Camera3D" parent="ElevatorShaft/ElevatorCar/PlayerSpawn" unique_id=645595310]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
 
-[node name="ElevatorDoors" type="Node3D" parent="ElevatorShaft/ElevatorCar"]
+[node name="ElevatorDoors" type="Node3D" parent="ElevatorShaft/ElevatorCar" unique_id=1515006289]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.02753979)
 script = ExtResource("door_scr")
-open_duration = 1.3
-left_gate_path = NodePath("GateLeft")
-right_gate_path = NodePath("GateRight")
-open_distance = 1.3
 
 [node name="GateLeft" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/ElevatorDoors" unique_id=1925187117]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.625, 1.5836571, -1.4223263)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.625, 1.4539986, -1.4632895)
 mesh = SubResource("Mesh_GatePanel")
 surface_material_override/0 = SubResource("Mat_Gate")
 
@@ -628,7 +505,7 @@ mesh = SubResource("Mesh_GateGlowStrip")
 surface_material_override/0 = SubResource("Mat_GateGlow")
 
 [node name="GateRight" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar/ElevatorDoors" unique_id=2058429310]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.625, 1.657699, -1.3205979)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.625, 1.4536381, -1.4723663)
 mesh = SubResource("Mesh_GatePanel")
 surface_material_override/0 = SubResource("Mat_Gate")
 
@@ -643,6 +520,14 @@ visible = false
 mesh = SubResource("Mesh_SingleDoorBox")
 surface_material_override/0 = SubResource("Mat_Gate")
 
+[node name="WallBack2" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=293323850]
+transform = Transform3D(-4.3711385e-08, -0.28, 0, 0.99999994, -1.2239188e-08, 0, 0, 0, 1, -1.7727549, 1.5176315, -1.48)
+mesh = SubResource("Mesh_WallPanel")
+
+[node name="WallBack3" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=1561257325]
+transform = Transform3D(-4.3711385e-08, -0.28, 0, 0.99999994, -1.2239188e-08, 0, 0, 0, 1, 1.790209, 1.5176315, -1.48)
+mesh = SubResource("Mesh_WallPanel")
+
 [node name="CinematicCanvas" type="CanvasLayer" parent="." unique_id=1151541345]
 layer = 100
 
@@ -654,4 +539,3 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-
