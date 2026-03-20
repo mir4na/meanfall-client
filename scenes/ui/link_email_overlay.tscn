@@ -1,0 +1,131 @@
+[gd_scene format=3 uid="uid://link_email_overlay"]
+
+[ext_resource type="Script" path="res://scripts/ui/link_email_overlay.gd" id="1"]
+
+[node name="LinkEmailOverlay" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1")
+
+[node name="Dimmer" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0, 0, 0, 0.65)
+
+[node name="Center" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Panel" type="PanelContainer" parent="Center"]
+custom_minimum_size = Vector2(460, 0)
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="Center/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="VBox" type="VBoxContainer" parent="Center/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Link Email Account"
+horizontal_alignment = 1
+
+[node name="SubLabel" type="Label" parent="Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.7, 1)
+theme_override_font_sizes/font_size = 13
+text = "We'll send a one-time code to verify your email."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="HSep" type="HSeparator" parent="Center/Panel/Margin/VBox"]
+layout_mode = 2
+
+[node name="EmailStep" type="VBoxContainer" parent="Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="EmailLabel" type="Label" parent="Center/Panel/Margin/VBox/EmailStep"]
+layout_mode = 2
+text = "Email"
+
+[node name="EmailInput" type="LineEdit" parent="Center/Panel/Margin/VBox/EmailStep"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+placeholder_text = "your@email.com"
+
+[node name="SendOtpButton" type="Button" parent="Center/Panel/Margin/VBox/EmailStep"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "SEND VERIFICATION CODE"
+
+[node name="OtpStep" type="VBoxContainer" parent="Center/Panel/Margin/VBox"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="OtpHint" type="Label" parent="Center/Panel/Margin/VBox/OtpStep"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.7, 1)
+theme_override_font_sizes/font_size = 13
+text = "Check your inbox for a 6-digit code."
+horizontal_alignment = 1
+
+[node name="OtpInput" type="LineEdit" parent="Center/Panel/Margin/VBox/OtpStep"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+placeholder_text = "000000"
+max_length = 6
+
+[node name="PasswordLabel" type="Label" parent="Center/Panel/Margin/VBox/OtpStep"]
+layout_mode = 2
+text = "Set a Password"
+
+[node name="PasswordInput" type="LineEdit" parent="Center/Panel/Margin/VBox/OtpStep"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+placeholder_text = "At least 8 characters"
+secret = true
+
+[node name="VerifyButton" type="Button" parent="Center/Panel/Margin/VBox/OtpStep"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "VERIFY & LINK"
+
+[node name="StatusLabel" type="Label" parent="Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = ""
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="CancelButton" type="Button" parent="Center/Panel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+flat = true
+theme_override_font_sizes/font_size = 14
+text = "Cancel"
+
+[connection signal="pressed" from="Center/Panel/Margin/VBox/EmailStep/SendOtpButton" to="." method="_on_send_otp_pressed"]
+[connection signal="pressed" from="Center/Panel/Margin/VBox/OtpStep/VerifyButton" to="." method="_on_verify_pressed"]
+[connection signal="pressed" from="Center/Panel/Margin/VBox/CancelButton" to="." method="_on_cancel_pressed"]
+[connection signal="text_changed" from="Center/Panel/Margin/VBox/OtpStep/OtpInput" to="." method="_on_otp_text_changed"]

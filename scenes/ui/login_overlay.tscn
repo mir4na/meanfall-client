@@ -169,7 +169,50 @@ text = "PLAY AS GUEST"
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
-text = "EMAIL LOGIN"
+text = "LOGIN (EMAIL)"
+
+[node name="EmailSignupBtn" type="Button" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/MainPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Create new account"
+
+[node name="LoginPanel" type="VBoxContainer" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="LoginEmailInput" type="LineEdit" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/LoginPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+placeholder_text = "Email address"
+
+[node name="LoginPasswordInput" type="LineEdit" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/LoginPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+placeholder_text = "Password"
+secret = true
+
+[node name="LoginSubmitBtn" type="Button" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/LoginPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+text = "LOGIN"
+
+[node name="LoginBackBtn" type="Button" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/LoginPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Back"
 
 [node name="EmailPanel" type="VBoxContainer" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer"]
 unique_name_in_owner = true
@@ -193,7 +236,7 @@ placeholder_text = "Enter email address"
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
-text = "CONTINUE"
+text = "SEND OTP"
 
 [node name="BackBtn1" type="Button" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/EmailPanel"]
 unique_name_in_owner = true
@@ -224,6 +267,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 placeholder_text = "Enter OTP code"
+max_length = 6
 
 [node name="VerifyOtpBtn" type="Button" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/OtpPanel"]
 unique_name_in_owner = true
@@ -254,7 +298,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.6, 0.6, 0.7, 1)
 theme_override_font_sizes/font_size = 13
-text = "Complete Profile"
+text = "Complete Profile / Setup Password"
 
 [node name="UsernameInput" type="LineEdit" parent="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/RegisterPanel"]
 unique_name_in_owner = true
@@ -277,8 +321,12 @@ text = "FINISH"
 
 [connection signal="pressed" from="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/MainPanel/GuestBtn" to="." method="_on_guest_pressed"]
 [connection signal="pressed" from="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/MainPanel/EmailLoginBtn" to="." method="_on_email_login_pressed"]
+[connection signal="pressed" from="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/MainPanel/EmailSignupBtn" to="." method="_on_email_signup_pressed"]
+[connection signal="pressed" from="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/LoginPanel/LoginSubmitBtn" to="." method="_on_login_submit_pressed"]
+[connection signal="pressed" from="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/LoginPanel/LoginBackBtn" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/EmailPanel/SendOtpBtn" to="." method="_on_send_otp_pressed"]
 [connection signal="pressed" from="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/EmailPanel/BackBtn1" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/OtpPanel/VerifyOtpBtn" to="." method="_on_verify_otp_pressed"]
 [connection signal="pressed" from="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/OtpPanel/BackBtn2" to="." method="_on_back_pressed"]
+[connection signal="text_changed" from="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/OtpPanel/OtpInput" to="." method="_on_otp_text_changed"]
 [connection signal="pressed" from="Center/Card/HBox/RightForm/Margin/VBox/FormsContainer/RegisterPanel/FinishBtn" to="." method="_on_finish_auth_pressed"]

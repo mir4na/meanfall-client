@@ -9,10 +9,13 @@ const C_MUTED      := Color(0.55, 0.55, 0.72, 1.0)
 
 @onready var main_panel: Control = %MainPanel
 @onready var email_panel: Control = %EmailPanel
+@onready var login_panel: Control = %LoginPanel
 @onready var otp_panel: Control = %OtpPanel
 @onready var register_panel: Control = %RegisterPanel
 
 @onready var email_input: LineEdit = %EmailInput
+@onready var login_email_input: LineEdit = %LoginEmailInput
+@onready var login_password_input: LineEdit = %LoginPasswordInput
 @onready var otp_input: LineEdit = %OtpInput
 @onready var password_input: LineEdit = %PasswordInput
 @onready var username_input: LineEdit = %UsernameInput
@@ -32,7 +35,7 @@ func _ready() -> void:
 		_goto_main_menu()
 
 func _apply_styles() -> void:
-	var inputs = [%EmailInput, %OtpInput, %UsernameInput, %PasswordInput]
+	var inputs = [%EmailInput, %OtpInput, %UsernameInput, %PasswordInput, %LoginEmailInput, %LoginPasswordInput]
 	for inp in inputs:
 		var sb := StyleBoxFlat.new()
 		sb.bg_color = Color(0, 0, 0, 0.3)
@@ -51,7 +54,7 @@ func _apply_styles() -> void:
 		inp.add_theme_color_override("font_color", C_WHITE)
 		inp.add_theme_color_override("font_placeholder_color", C_MUTED)
 
-	var btns_primary = [%GuestBtn, %SendOtpBtn, %VerifyOtpBtn, %FinishBtn]
+	var btns_primary = [%GuestBtn, %SendOtpBtn, %VerifyOtpBtn, %FinishBtn, %LoginSubmitBtn]
 	for btn in btns_primary:
 		var sb_n := StyleBoxFlat.new()
 		sb_n.bg_color = C_ACCENT2.darkened(0.2)
@@ -68,7 +71,7 @@ func _apply_styles() -> void:
 		btn.add_theme_font_size_override("font_size", 16)
 		btn.add_theme_color_override("font_color", C_WHITE)
 
-	var btns_sec = [%EmailLoginBtn, %BackBtn1, %BackBtn2]
+	var btns_sec = [%EmailLoginBtn, %EmailSignupBtn, %BackBtn1, %BackBtn2, %LoginBackBtn]
 	for btn in btns_sec:
 		var sb_n := StyleBoxFlat.new()
 		sb_n.bg_color = Color(1, 1, 1, 0.05)
@@ -84,23 +87,40 @@ func _apply_styles() -> void:
 		btn.add_theme_stylebox_override("hover", sb_h)
 		btn.add_theme_stylebox_override("pressed", sb_n)
 		btn.add_theme_font_size_override("font_size", 14)
-		if btn == %EmailLoginBtn:
+		if btn == %EmailLoginBtn or btn == %EmailSignupBtn:
 			btn.add_theme_font_size_override("font_size", 16)
 		btn.add_theme_color_override("font_color", Color(0.8, 0.8, 0.9))
 
 func _show_panel(panel: Control) -> void:
 	main_panel.visible = false
 	email_panel.visible = false
+	login_panel.visible = false
 	otp_panel.visible = false
 	register_panel.visible = false
 	panel.visible = true
 	error_label.text = ""
 
 func _on_guest_pressed() -> void:
-	NakamaManager.authenticate_device(OS.get_unique_id())
+	NakamaManager.check_device_account(OS.get_unique_id())
 
 func _on_email_login_pressed() -> void:
+	_show_panel(login_panel)
+
+func _on_email_signup_pressed() -> void:
 	_show_panel(email_panel)
+
+func _on_login_submit_pressed() -> void:
+	var em = login_email_input.text.strip_edges()
+	var pw = login_password_input.text
+	if em.is_empty() or pw.length() < 8:
+		error_label.text = "Valid email and password required"
+		return
+	if not _is_valid_email(em):
+		error_label.text = "Please enter a valid email address"
+		return
+	_current_email = em
+	error_label.text = "Logging in..."
+	NakamaManager.authenticate_email(em, pw, "")
 
 func _is_valid_email(email: String) -> bool:
 	var regex := RegEx.new()
@@ -117,24 +137,47 @@ func _on_send_otp_pressed() -> void:
 		error_label.text = "Please enter a valid email address"
 		return
 		
-	var result = await NakamaManager.rpc_call("send_otp", {"email": _current_email})
+	error_label.text = "Checking email availability..."
+	var dummy_session = await NakamaManager._client.authenticate_email_async(_current_email, "dummy_password_for_check_123!@#", null, false)
+	if not dummy_session.is_exception() or dummy_session.get_exception().message != "User account not found.":
+		error_label.text = "Email is already registered"
+		return
+
+	error_label.text = "Sending OTP..."
+	var result = await NakamaManager.rpc_call_unauthenticated("send_otp", {"email": _current_email})
 	if result.has("error"):
 		error_label.text = result.error
 	else:
 		_show_panel(otp_panel)
 
+func _on_otp_text_changed(new_text: String) -> void:
+	var old_caret = otp_input.caret_column
+	var filtered = ""
+	for i in range(new_text.length()):
+		var c = new_text[i]
+		if c.is_valid_float() and not c in [".", ",", "+", "-"]:
+			filtered += c
+	
+	if filtered.length() > 6:
+		filtered = filtered.substr(0, 6)
+		
+	if new_text != filtered:
+		otp_input.text = filtered
+		otp_input.caret_column = clampi(old_caret - (new_text.length() - filtered.length()), 0, filtered.length())
+
 func _on_verify_otp_pressed() -> void:
 	var otp = otp_input.text
-	if otp.is_empty():
-		error_label.text = "OTP is required"
+	if otp.length() != 6:
+		error_label.text = "OTP must be 6 digits"
 		return
 		
-	var result = await NakamaManager.rpc_call("verify_otp", {"email": _current_email, "otp": otp})
+	error_label.text = "Verifying..."
+	var result = await NakamaManager.rpc_call_unauthenticated("verify_otp", {"email": _current_email, "otp": otp})
 	if result.has("error"):
 		error_label.text = result.error
 	else:
 		_is_guest_mode = false
-		%RegLabel.text = "Complete Profile"
+		%RegLabel.text = "Complete Profile / Setup Password"
 		password_input.visible = true
 		_show_panel(register_panel)
 
@@ -152,9 +195,7 @@ func _on_finish_auth_pressed() -> void:
 		if username.is_empty():
 			error_label.text = "Username is required"
 			return
-		var success = await NakamaManager.update_account(username)
-		if success:
-			_goto_main_menu()
+		NakamaManager.create_device_account(OS.get_unique_id(), username)
 	else:
 		if password.length() < 8:
 			error_label.text = "Password must be at least 8 characters"
@@ -163,8 +204,15 @@ func _on_finish_auth_pressed() -> void:
 		if GameState.session:
 			var success = await NakamaManager.link_email(_current_email, password)
 			if success:
+				if not username.is_empty():
+					await NakamaManager.update_account(username)
+				# update_account already calls _on_authenticated. 
+				# If username was empty, we should still call _on_authenticated to save the session & fetch account
+				if username.is_empty():
+					NakamaManager._on_authenticated(GameState.session)
 				_goto_main_menu()
 		else:
+			# Only reachable if session is null and somehow got here (fallback).
 			NakamaManager.authenticate_email(_current_email, password, username)
 
 func _on_back_pressed() -> void:

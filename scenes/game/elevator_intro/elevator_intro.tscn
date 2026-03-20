@@ -1,7 +1,8 @@
-[gd_scene load_steps=38 format=3 uid="uid://dw2js5p60y7cy"]
+[gd_scene format=3 uid="uid://dw2js5p60y7cy"]
 
 [ext_resource type="Script" uid="uid://8ubee8h0dyan" path="res://scripts/game/elevator_intro.gd" id="1_elevator"]
 [ext_resource type="PackedScene" uid="uid://qfgio7h4utge" path="res://scenes/game/game_room/game_room.tscn" id="2_eikqt"]
+[ext_resource type="Shader" uid="uid://b2ncn4t23oy6f" path="res://shaders/cinematic.gdshader" id="3_shader_cinematic"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.02, 0.02, 0.04, 1)
@@ -201,6 +202,11 @@ emission_energy_multiplier = 3.0
 [sub_resource type="BoxMesh" id="Mesh_SingleDoorBox"]
 size = Vector3(2.5, 2.8, 0.06)
 
+[sub_resource type="ShaderMaterial" id="ShaderMat_cinematic"]
+shader = ExtResource("3_shader_cinematic")
+shader_parameter/bar_height = 0.0
+shader_parameter/fade_alpha = 1.0
+
 [sub_resource type="Animation" id="Animation_intro"]
 resource_name = "intro"
 length = 8.5
@@ -219,26 +225,26 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("CinematicCanvas/TopBar:offset_bottom")
+tracks/1/path = NodePath("CinematicCanvas/CinematicOverlay:material:shader_parameter/bar_height")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5, 6.0, 6.5),
+"times": PackedFloat32Array(0, 0.5, 6, 6.5),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [0.0, 80.0, 80.0, 0.0]
+"values": [0.0, 0.1, 0.1, 0.0]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("CinematicCanvas/BottomBar:offset_top")
+tracks/2/path = NodePath("CinematicCanvas/CinematicOverlay:material:shader_parameter/fade_alpha")
 tracks/2/interp = 2
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.5, 6.0, 6.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.0, -80.0, -80.0, 0.0]
+"values": [1.0, 0.0]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -247,7 +253,7 @@ tracks/3/path = NodePath("ElevatorShaft/ElevatorCar/SingleDoor:position:x")
 tracks/3/interp = 2
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 4.8, 6.0),
+"times": PackedFloat32Array(0, 4.8, 6),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [0.0, 0.0, -2.5]
@@ -293,7 +299,7 @@ tracks/6/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_intro"]
 _data = {
-"intro": SubResource("Animation_intro")
+&"intro": SubResource("Animation_intro")
 }
 
 [node name="ElevatorIntro" type="Node3D" unique_id=1776777101]
@@ -346,6 +352,7 @@ cast_shadow = 0
 mesh = SubResource("Mesh_Cable")
 
 [node name="ElevatorCar" type="Node3D" parent="ElevatorShaft" unique_id=488140327]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 0)
 
 [node name="Floor" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=187763838]
 mesh = SubResource("Mesh_Floor")
@@ -622,38 +629,25 @@ mesh = SubResource("Mesh_GateGlowStrip")
 surface_material_override/0 = SubResource("Mat_GateGlow")
 
 [node name="SingleDoor" type="MeshInstance3D" parent="ElevatorShaft/ElevatorCar" unique_id=1453424806]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0028861165, 1.5143849, -1.4233488)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5143849, -1.4233488)
 mesh = SubResource("Mesh_SingleDoorBox")
 surface_material_override/0 = SubResource("Mat_Gate")
 
-[node name="CinematicCanvas" type="CanvasLayer" parent="."]
+[node name="CinematicCanvas" type="CanvasLayer" parent="." unique_id=1151541345]
 layer = 100
 
-[node name="TopBar" type="ColorRect" parent="CinematicCanvas"]
-custom_minimum_size = Vector2(0, 80)
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 0.0
-offset_bottom = 0.0
-grow_horizontal = 2
-color = Color(0, 0, 0, 1)
-
-[node name="BottomBar" type="ColorRect" parent="CinematicCanvas"]
-custom_minimum_size = Vector2(0, 80)
-anchors_preset = 12
-anchor_top = 1.0
+[node name="CinematicOverlay" type="ColorRect" parent="CinematicCanvas" unique_id=49727052]
+material = SubResource("ShaderMat_cinematic")
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 0.0
-offset_bottom = 0.0
 grow_horizontal = 2
-grow_vertical = 0
-color = Color(0, 0, 0, 1)
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1156074412]
-libraries = {
-"": SubResource("AnimationLibrary_intro")
-}
-autoplay = "intro"
+libraries/ = SubResource("AnimationLibrary_intro")
+autoplay = &"intro"
 
 [node name="GameRoom" parent="." unique_id=1856797118 instance=ExtResource("2_eikqt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -20.194082, -10.521748)

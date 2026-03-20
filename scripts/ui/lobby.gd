@@ -36,7 +36,7 @@ func _on_match_joined(_match_id: String) -> void:
 	_searching = false
 	status_label.text = "Match found!"
 	await get_tree().create_timer(0.8).timeout
-	SceneTransition.fade_to_scene("res://scenes/game/elevator_intro/elevator_intro.tscn")
+	SceneTransition.fade_to_scene("res://scenes/game/elevator_intro/elevator_intro.tscn", SceneTransition.Style.RADIAL, true)
 
 func _on_cancel_pressed() -> void:
 	_searching = false

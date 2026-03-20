@@ -154,7 +154,7 @@ offset_bottom = 66.0
 grow_horizontal = 0
 theme_override_colors/font_color = Color(0.55, 0.55, 0.72, 1)
 theme_override_font_sizes/font_size = 22
-text = "⚙"
+text = "Settings"
 
 [node name="CenterArea" type="Control" parent="." unique_id=1345216693]
 layout_mode = 1
@@ -223,7 +223,7 @@ alignment = 1
 [node name="Label1" type="Label" parent="CenterArea/VBox/PlayBtn/VBox" unique_id=1791697447]
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
-text = "⚡ QUICK MATCH"
+text = "QUICK MATCH"
 horizontal_alignment = 1
 
 [node name="Label2" type="Label" parent="CenterArea/VBox/PlayBtn/VBox" unique_id=515885396]

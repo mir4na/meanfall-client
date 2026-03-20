@@ -9,12 +9,16 @@ extends Control
 @onready var history_list: VBoxContainer = $Margin/HBox/HistoryPanel/VBox/Scroll/HistoryList
 
 func _ready() -> void:
+	var bg: ColorRect = $Background
+	var shader := load("res://shaders/bg_aurora.gdshader") as Shader
+	var mat := ShaderMaterial.new()
+	mat.shader = shader
+	bg.material = mat
 	_load_profile()
 
 func _load_profile() -> void:
 	username_label.text = GameState.local_player_username
 	
-	# Fetch stats
 	var stats = await NakamaManager.get_player_stats()
 	if not stats.has("error"):
 		points_value.text = str(stats.get("totalPoints", 0))
@@ -22,12 +26,11 @@ func _load_profile() -> void:
 		matches_value.text = str(stats.get("totalMatches", 0))
 		winrate_value.text = str(int(float(stats.get("winrate", "0.0")) * 100)) + "%"
 		
-		var total_sec = stats.get("totalPlaytimeSec", 0)
-		var hours = total_sec / 3600
-		var minutes = (total_sec % 3600) / 60
+		var total_sec := int(stats.get("totalPlaytimeSec", 0))
+		var hours := total_sec / 3600
+		var minutes := (total_sec % 3600) / 60
 		playtime_value.text = str(hours) + "h " + str(minutes) + "m"
 	
-	# Fetch history
 	var history = await NakamaManager.get_match_history()
 	for child in history_list.get_children():
 		child.queue_free()
@@ -75,8 +78,9 @@ func _add_history_item(m: Dictionary) -> void:
 	history_list.add_child(panel)
 
 func _on_back_pressed() -> void:
-	SceneTransition.fade_to_scene("res://scenes/ui/main_menu/main_menu.tscn")
+	SceneTransition.fade_to_scene("res://scenes/ui/main_menu/main_menu.tscn", SceneTransition.Style.SLIDE_UP)
 
 func _on_logout_pressed() -> void:
-	GameState.reset()
-	SceneTransition.fade_to_scene("res://scenes/ui/main_menu/main_menu.tscn")
+	#GameState.reset()
+	#SceneTransition.fade_to_scene("res://scenes/ui/main_menu/main_menu.tscn")
+	pass

@@ -50,7 +50,6 @@ func restore_session_async() -> bool:
 			token = data.get("token", "")
 			refresh_token = data.get("refresh_token", "")
 	else:
-		# Fallback for old simple string token
 		token = content
 	
 	if token.is_empty():
@@ -67,6 +66,8 @@ func restore_session_async() -> bool:
 	return true
 
 func _save_session(session: NakamaSession) -> void:
+	if session == null or session.token == null or session.token.is_empty():
+		return
 	var data = {
 		"token": session.token,
 		"refresh_token": session.refresh_token
@@ -89,17 +90,25 @@ func logout() -> void:
 		_socket = null
 	logout_succeeded.emit()
 
-func authenticate_device(device_id: String) -> void:
-	var result = await _client.authenticate_device_async(device_id)
+func check_device_account(device_id: String) -> void:
+	var result = await _client.authenticate_device_async(device_id, "", false)
+	if result.is_exception():
+		var msg = result.get_exception().message
+		if msg == "User account not found.":
+			guest_created.emit(null)
+		else:
+			session_failed.emit(msg)
+		return
+		
+	_on_authenticated(result)
+
+func create_device_account(device_id: String, username: String) -> void:
+	var result = await _client.authenticate_device_async(device_id, username, true)
 	if result.is_exception():
 		session_failed.emit(result.get_exception().message)
 		return
 		
-	if result.created:
-		_session = result
-		guest_created.emit(result)
-	else:
-		_on_authenticated(result)
+	_on_authenticated(result)
 
 func update_account(username: String) -> bool:
 	var result = await _client.update_account_async(_session, username)
@@ -117,11 +126,22 @@ func get_account() -> Dictionary:
 
 func authenticate_email(email: String, password: String, username: String = "") -> void:
 	var create := username != ""
-	var result = await _client.authenticate_email_async(email, password, username, create)
-	if result.is_exception():
-		session_failed.emit(result.get_exception().message)
+	var result: NakamaSession = await _client.authenticate_email_async(email, password, username if create else null, create)
+	if result == null:
+		session_failed.emit("Email login failed (null exception).")
 		return
-	_on_authenticated(result)
+	if result.is_exception():
+		var msg = result.get_exception().message
+		if msg == "Invalid credentials.":
+			msg = "Incorrect Email or Password."
+		elif msg == "User account not found.":
+			msg = "Email is not registered."
+		session_failed.emit(msg)
+		return
+	if result.token == null or result.token.is_empty():
+		session_failed.emit("Email login failed (nil token).")
+		return
+	await _on_authenticated(result)
 
 func link_email(email: String, password: String) -> bool:
 	var result = await _client.link_email_async(_session, email, password)
@@ -136,7 +156,6 @@ func _on_authenticated(session: NakamaSession) -> void:
 	GameState.session = _session
 	GameState.local_player_id = _session.user_id
 	
-	# Fetch full account info
 	GameState.account = await get_account()
 	if GameState.account.has("user"):
 		GameState.local_player_username = GameState.account["user"].get("username", session.username)
@@ -177,6 +196,15 @@ func send_message(op_code: int, data: Dictionary) -> void:
 func rpc_call(rpc_id: String, payload: Dictionary) -> Dictionary:
 	var payload_str: String = JSON.stringify(payload)
 	var result = await _client.rpc_async(_session, rpc_id, payload_str)
+	if result.is_exception():
+		return {"error": result.get_exception().message}
+	var parsed = JSON.parse_string(result.payload)
+	return parsed if parsed is Dictionary else {}
+
+func rpc_call_unauthenticated(rpc_id: String, payload: Dictionary) -> Dictionary:
+	var payload_str: String = JSON.stringify(payload)
+	var http_key := "meanfall_runtime_key"
+	var result = await _client.rpc_async_with_key(http_key, rpc_id, payload_str)
 	if result.is_exception():
 		return {"error": result.get_exception().message}
 	var parsed = JSON.parse_string(result.payload)

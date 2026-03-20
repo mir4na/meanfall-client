@@ -23,6 +23,7 @@ GameState="*res://scripts/autoloads/game_state.gd"
 NakamaManager="*res://scripts/autoloads/nakama_manager.gd"
 AudioManager="*res://scripts/autoloads/audio_manager.gd"
 SceneTransition="*res://scripts/autoloads/scene_transition.gd"
+ShaderFX="*res://scripts/autoloads/shader_fx.gd"
 Nakama="*res://addons/nakama/nakama.gd"
 
 [display]

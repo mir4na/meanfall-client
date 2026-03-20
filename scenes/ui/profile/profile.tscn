@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://profile"]
+[gd_scene format=3 uid="uid://profile"]
 
-[ext_resource type="Script" path="res://scripts/ui/profile.gd" id="1"]
+[ext_resource type="Script" uid="uid://caubyjk2da1v5" path="res://scripts/ui/profile.gd" id="1"]
 
-[node name="Profile" type="Control"]
+[node name="Profile" type="Control" unique_id=1988927203]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=908424794]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,7 +20,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.04, 0.04, 0.07, 1)
 
-[node name="Margin" type="MarginContainer" parent="."]
+[node name="Margin" type="MarginContainer" parent="." unique_id=196047331]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,127 +32,124 @@ theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 40
 
-[node name="HBox" type="HBoxContainer" parent="Margin"]
+[node name="HBox" type="HBoxContainer" parent="Margin" unique_id=1793883993]
 layout_mode = 2
 theme_override_constants/separation = 40
 
-[node name="StatsPanel" type="PanelContainer" parent="Margin/HBox"]
+[node name="StatsPanel" type="PanelContainer" parent="Margin/HBox" unique_id=1691229758]
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 
-[node name="VBox" type="VBoxContainer" parent="Margin/HBox/StatsPanel"]
+[node name="VBox" type="VBoxContainer" parent="Margin/HBox/StatsPanel" unique_id=2027572626]
 layout_mode = 2
 theme_override_constants/separation = 15
 alignment = 1
 
-[node name="Avatar" type="ColorRect" parent="Margin/HBox/StatsPanel/VBox"]
+[node name="Avatar" type="ColorRect" parent="Margin/HBox/StatsPanel/VBox" unique_id=376289047]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_horizontal = 4
 color = Color(0.2, 0.2, 0.25, 1)
 
-[node name="UsernameLabel" type="Label" parent="Margin/HBox/StatsPanel/VBox"]
+[node name="UsernameLabel" type="Label" parent="Margin/HBox/StatsPanel/VBox" unique_id=720126404]
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = "Username"
 horizontal_alignment = 1
 
-[node name="LeagueLabel" type="Label" parent="Margin/HBox/StatsPanel/VBox"]
+[node name="LeagueLabel" type="Label" parent="Margin/HBox/StatsPanel/VBox" unique_id=1988584706]
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
 theme_override_colors/font_color = Color(0.8, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 20
 text = "Bronze League"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="Margin/HBox/StatsPanel/VBox"]
+[node name="HSeparator" type="HSeparator" parent="Margin/HBox/StatsPanel/VBox" unique_id=159776995]
 layout_mode = 2
 
-[node name="Grid" type="GridContainer" parent="Margin/HBox/StatsPanel/VBox"]
+[node name="Grid" type="GridContainer" parent="Margin/HBox/StatsPanel/VBox" unique_id=714885587]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/h_separation = 20
 theme_override_constants/v_separation = 10
 columns = 2
 
-[node name="PointsTitle" type="Label" parent="Margin/HBox/StatsPanel/VBox/Grid"]
+[node name="PointsTitle" type="Label" parent="Margin/HBox/StatsPanel/VBox/Grid" unique_id=943611625]
 layout_mode = 2
-text = "Total Points:"
 theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+text = "Total Points:"
 
-[node name="PointsValue" type="Label" parent="Margin/HBox/StatsPanel/VBox/Grid"]
+[node name="PointsValue" type="Label" parent="Margin/HBox/StatsPanel/VBox/Grid" unique_id=873934746]
 layout_mode = 2
 text = "1,000"
 
-[node name="MatchesTitle" type="Label" parent="Margin/HBox/StatsPanel/VBox/Grid"]
+[node name="MatchesTitle" type="Label" parent="Margin/HBox/StatsPanel/VBox/Grid" unique_id=398165694]
 layout_mode = 2
-text = "Matches Played:"
 theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+text = "Matches Played:"
 
-[node name="MatchesValue" type="Label" parent="Margin/HBox/StatsPanel/VBox/Grid"]
+[node name="MatchesValue" type="Label" parent="Margin/HBox/StatsPanel/VBox/Grid" unique_id=935492829]
 layout_mode = 2
 text = "0"
 
-[node name="WinrateTitle" type="Label" parent="Margin/HBox/StatsPanel/VBox/Grid"]
+[node name="WinrateTitle" type="Label" parent="Margin/HBox/StatsPanel/VBox/Grid" unique_id=1106692564]
 layout_mode = 2
-text = "Win Rate:"
 theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+text = "Win Rate:"
 
-[node name="WinrateValue" type="Label" parent="Margin/HBox/StatsPanel/VBox/Grid"]
+[node name="WinrateValue" type="Label" parent="Margin/HBox/StatsPanel/VBox/Grid" unique_id=1155985960]
 layout_mode = 2
 text = "0%"
 
-[node name="PlaytimeTitle" type="Label" parent="Margin/HBox/StatsPanel/VBox/Grid"]
+[node name="PlaytimeTitle" type="Label" parent="Margin/HBox/StatsPanel/VBox/Grid" unique_id=1935981893]
 layout_mode = 2
-text = "Total Playtime:"
 theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+text = "Total Playtime:"
 
-[node name="PlaytimeValue" type="Label" parent="Margin/HBox/StatsPanel/VBox/Grid"]
+[node name="PlaytimeValue" type="Label" parent="Margin/HBox/StatsPanel/VBox/Grid" unique_id=794197830]
 layout_mode = 2
 text = "0h 0m"
 
-[node name="Spacer" type="Control" parent="Margin/HBox/StatsPanel/VBox"]
+[node name="Spacer" type="Control" parent="Margin/HBox/StatsPanel/VBox" unique_id=1508652942]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="LogoutButton" type="Button" parent="Margin/HBox/StatsPanel/VBox"]
+[node name="LogoutButton" type="Button" parent="Margin/HBox/StatsPanel/VBox" unique_id=1682733618]
+visible = false
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 text = "Logout"
 
-[node name="BackButton" type="Button" parent="Margin/HBox/StatsPanel/VBox"]
+[node name="BackButton" type="Button" parent="Margin/HBox/StatsPanel/VBox" unique_id=819407367]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 text = "Back to Menu"
 
-[node name="HistoryPanel" type="PanelContainer" parent="Margin/HBox"]
+[node name="HistoryPanel" type="PanelContainer" parent="Margin/HBox" unique_id=62062170]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBox" type="VBoxContainer" parent="Margin/HBox/HistoryPanel"]
+[node name="VBox" type="VBoxContainer" parent="Margin/HBox/HistoryPanel" unique_id=133883218]
 layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
 
-[node name="Title" type="Label" parent="Margin/HBox/HistoryPanel/VBox"]
+[node name="Title" type="Label" parent="Margin/HBox/HistoryPanel/VBox" unique_id=1205653676]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "MATCH HISTORY"
 
-[node name="HSeparator" type="HSeparator" parent="Margin/HBox/HistoryPanel/VBox"]
+[node name="HSeparator" type="HSeparator" parent="Margin/HBox/HistoryPanel/VBox" unique_id=682409253]
 layout_mode = 2
 
-[node name="Scroll" type="ScrollContainer" parent="Margin/HBox/HistoryPanel/VBox"]
+[node name="Scroll" type="ScrollContainer" parent="Margin/HBox/HistoryPanel/VBox" unique_id=1873053222]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HistoryList" type="VBoxContainer" parent="Margin/HBox/HistoryPanel/VBox/Scroll"]
+[node name="HistoryList" type="VBoxContainer" parent="Margin/HBox/HistoryPanel/VBox/Scroll" unique_id=1011697285]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
-[node name="LoadingLabel" type="Label" parent="Margin/HBox/HistoryPanel/VBox/Scroll/HistoryList"]
+[node name="LoadingLabel" type="Label" parent="Margin/HBox/HistoryPanel/VBox/Scroll/HistoryList" unique_id=867508825]
 layout_mode = 2
 text = "Loading history..."
 horizontal_alignment = 1

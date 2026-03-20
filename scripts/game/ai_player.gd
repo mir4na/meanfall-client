@@ -1,41 +1,42 @@
 extends Node
 
-const MIN_SUBMIT_DELAY := 5.0
-const MAX_SUBMIT_DELAY := 25.0
-const NAIVE_BIAS_CENTER := 60.0
-const NAIVE_BIAS_SPREAD := 20.0
+signal action_taken(player_id: String, value: int)
 
-var _player_id: String
-var _is_active := false
-var _submit_timer: Timer
+const THINK_MIN := 1.0
+const THINK_MAX := 4.0
+const GUESS_NOISE := 8
 
-func setup(player_id: String) -> void:
-	_player_id = player_id
-	_submit_timer = Timer.new()
-	_submit_timer.one_shot = true
-	_submit_timer.timeout.connect(_on_submit_timeout)
-	add_child(_submit_timer)
+var player_id: String = ""
+var _strategy: String = "average"
+var _last_known_average: float = 50.0
+var _round_manager: Node = null
 
-func activate_for_round() -> void:
-	_is_active = true
-	var delay := randf_range(MIN_SUBMIT_DELAY, MAX_SUBMIT_DELAY)
-	_submit_timer.start(delay)
+func setup(pid: String, strategy: String = "average", rm: Node = null) -> void:
+	player_id = pid
+	_strategy = strategy
+	_round_manager = rm
 
-func deactivate() -> void:
-	_is_active = false
-	_submit_timer.stop()
+func decide_and_submit() -> void:
+	var think_time := randf_range(THINK_MIN, THINK_MAX)
+	await get_tree().create_timer(think_time).timeout
+	var guess := _compute_guess()
+	action_taken.emit(player_id, guess)
+	if _round_manager:
+		_round_manager.submit_guess(player_id, guess)
 
-func _on_submit_timeout() -> void:
-	if not _is_active:
-		return
-	_is_active = false
-	var guess := _generate_guess()
-	NakamaManager.send_message(2, {"value": guess})
+func notify_round_result(target: float) -> void:
+	_last_known_average = target / 0.8
 
-func _generate_guess() -> int:
-	var value: float
-	if randf() < 0.7:
-		value = randfn(NAIVE_BIAS_CENTER, NAIVE_BIAS_SPREAD)
-	else:
-		value = randf() * 100.0
-	return clampi(int(value), 0, 100)
+func _compute_guess() -> int:
+	var base: int
+	match _strategy:
+		"low":
+			base = int(_last_known_average * 0.8 * 0.5)
+		"high":
+			base = int(_last_known_average * 1.2)
+		"random":
+			base = randi() % 101
+		_:
+			base = int(_last_known_average * 0.8)
+	var noise := randi() % (GUESS_NOISE * 2 + 1) - GUESS_NOISE
+	return clampi(base + noise, 0, 100)

@@ -740,7 +740,7 @@ func list_tournaments_async(p_session : NakamaSession, p_category_start : int, p
 # @param p_state - Filter by group membership state.
 # @param p_limit - The number of records to list.
 # @param p_cursor - A cursor for the current position in the listing.
-# Returns a task which resolves to the group list object.
+# Returns a task which resolves to the group= list object.
 func list_user_groups_async(p_session : NakamaSession, p_user_id : String, p_state = null, p_limit = null, p_cursor = null): # -> NakamaAPI.ApiUserGroupList:
 	return await _api_client.list_user_groups_async(p_session, p_user_id, p_limit, p_state, p_cursor)
 

@@ -10,12 +10,14 @@ const SETTINGS_KEY := "user_settings"
 @onready var back_button: Button = $Center/Panel/VBox/BackButton
 
 func _ready() -> void:
-	back_button.pressed.connect(_on_back_pressed)
-	logout_button.pressed.connect(_on_logout_pressed)
-	link_button.pressed.connect(_on_link_pressed)
 	master_slider.value_changed.connect(AudioManager.set_master_volume)
 	bgm_slider.value_changed.connect(AudioManager.set_bgm_volume)
 	sfx_slider.value_changed.connect(AudioManager.set_sfx_volume)
+	var bg: ColorRect = $Background
+	var shader := load("res://shaders/bg_grid.gdshader") as Shader
+	var mat := ShaderMaterial.new()
+	mat.shader = shader
+	bg.material = mat
 	_load_settings()
 	_update_account_buttons()
 
@@ -43,12 +45,16 @@ func _save_settings() -> void:
 
 func _on_back_pressed() -> void:
 	_save_settings()
-	SceneTransition.fade_to_scene("res://scenes/ui/main_menu/main_menu.tscn")
+	SceneTransition.fade_to_scene("res://scenes/ui/main_menu/main_menu.tscn", SceneTransition.Style.SLIDE_UP)
 
 func _on_logout_pressed() -> void:
 	NakamaManager.logout()
 	SceneTransition.fade_to_scene("res://scenes/ui/login_overlay.tscn")
 
 func _on_link_pressed() -> void:
-	var overlay = load("res://scenes/ui/login_overlay.tscn").instantiate()
+	var overlay = load("res://scenes/ui/link_email_overlay.tscn").instantiate()
+	overlay.link_succeeded.connect(_on_email_linked)
 	add_child(overlay)
+
+func _on_email_linked() -> void:
+	link_button.visible = false

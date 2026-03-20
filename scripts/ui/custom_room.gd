@@ -75,7 +75,7 @@ func _on_join_pressed() -> void:
 	await NakamaManager.join_match(result.get("matchId", ""))
 
 func _on_match_joined(_match_id: String) -> void:
-	SceneTransition.fade_to_scene("res://scenes/game/elevator_intro/elevator_intro.tscn")
+	SceneTransition.fade_to_scene("res://scenes/game/elevator_intro/elevator_intro.tscn", SceneTransition.Style.RADIAL, true)
 
 func _on_back_pressed() -> void:
 	SceneTransition.fade_to_scene("res://scenes/ui/main_menu/main_menu.tscn")

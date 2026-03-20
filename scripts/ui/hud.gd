@@ -36,9 +36,6 @@ var _has_guessed := false
 var _active_power_up := "none"
 
 func _ready() -> void:
-	submit_button.pressed.connect(_on_submit_pressed)
-	powerup_button.pressed.connect(_on_powerup_pressed)
-	chat_toggle.pressed.connect(_on_chat_toggle)
 	NakamaManager.message_received.connect(_on_message_received)
 	GameState.lives_updated.connect(_on_lives_updated)
 	result_panel.visible = false
