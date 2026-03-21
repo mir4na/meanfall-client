@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://sfbmnkxguibx" path="res://scripts/ui/hud.gd" id="1"]
 [ext_resource type="Script" uid="uid://cxpjbatcl1m1" path="res://scripts/ui/chat_panel.gd" id="2"]
 
-[node name="HUD" type="Control" unique_id=1241123229]
+[node name="HUD" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,83 +12,146 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1")
 
-[node name="TopBar" type="HBoxContainer" parent="." unique_id=1847937257]
+[node name="TopLeftInfo" type="VBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 60.0
+offset_left = 32.0
+offset_top = 32.0
+
+[node name="LocalPlayerName" type="Label" parent="TopLeftInfo"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Player"
+
+[node name="LocalPlayerLives" type="Label" parent="TopLeftInfo"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Lives: 10"
+
+[node name="TopCenterInfo" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 32.0
+offset_right = 200.0
 grow_horizontal = 2
 
-[node name="RoundLabel" type="Label" parent="TopBar" unique_id=1016844356]
+[node name="TimerLabel" type="Label" parent="TopCenterInfo"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 24
-text = "Round 1"
-
-[node name="TimerLabel" type="Label" parent="TopBar" unique_id=1107686235]
-custom_minimum_size = Vector2(80, 0)
-layout_mode = 2
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 56
+horizontal_alignment = 1
 text = "30"
+
+[node name="EventLabel" type="Label" parent="TopCenterInfo"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
 horizontal_alignment = 1
 
-[node name="PlayersBar" type="PanelContainer" parent="." unique_id=420467532]
+[node name="GuessPanel" type="PanelContainer" parent="."]
 layout_mode = 1
-anchors_preset = 12
+anchors_preset = 7
+anchor_left = 0.5
 anchor_top = 1.0
-anchor_right = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
-offset_top = -90.0
+offset_left = -220.0
+offset_top = -240.0
+offset_right = 220.0
+offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="PlayersContainer" type="HBoxContainer" parent="PlayersBar" unique_id=1928098662]
+[node name="GuessVBox" type="VBoxContainer" parent="GuessPanel"]
 layout_mode = 2
-theme_override_constants/separation = 24
+theme_override_constants/separation = 16
 alignment = 1
 
-[node name="GuessPanel" type="PanelContainer" parent="." unique_id=876928739]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -220.0
-offset_top = -100.0
-offset_right = 220.0
-offset_bottom = 100.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="GuessVBox" type="VBoxContainer" parent="GuessPanel" unique_id=216559697]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="GuessInput" type="LineEdit" parent="GuessPanel/GuessVBox" unique_id=975421274]
+[node name="GuessInput" type="LineEdit" parent="GuessPanel/GuessVBox"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
-theme_override_font_sizes/font_size = 28
-placeholder_text = "Enter 0–100"
+theme_override_font_sizes/font_size = 32
+placeholder_text = "Tebakan Anda"
+alignment = 1
 
-[node name="SubmitButton" type="Button" parent="GuessPanel/GuessVBox" unique_id=1058018795]
+[node name="SubmitButton" type="Button" parent="GuessPanel/GuessVBox"]
 custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
-theme_override_font_sizes/font_size = 22
-text = "SUBMIT GUESS"
+theme_override_font_sizes/font_size = 24
+text = "Submit Angka"
 
-[node name="PowerupButton" type="Button" parent="GuessPanel/GuessVBox" unique_id=1279977634]
+[node name="RightPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = 32.0
+offset_right = -32.0
+offset_bottom = -32.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="RightPanel"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="PlayersContainer" type="VBoxContainer" parent="RightPanel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="BottomLeftActions" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = -450.0
+offset_right = 382.0
+offset_bottom = -32.0
+grow_vertical = 0
+alignment = 2
+
+[node name="ChatPanel" type="PanelContainer" parent="BottomLeftActions"]
 visible = false
-custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
-text = "ACTIVATE POWER-UP"
+size_flags_vertical = 3
+script = ExtResource("2")
 
-[node name="PowerupLabel" type="Label" parent="GuessPanel/GuessVBox" unique_id=2131120119]
+[node name="VBox" type="VBoxContainer" parent="BottomLeftActions/ChatPanel"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
-horizontal_alignment = 1
 
-[node name="ResultPanel" type="PanelContainer" parent="." unique_id=1669602091]
+[node name="ScrollContainer" type="ScrollContainer" parent="BottomLeftActions/ChatPanel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MessagesContainer" type="VBoxContainer" parent="BottomLeftActions/ChatPanel/VBox/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InputRow" type="HBoxContainer" parent="BottomLeftActions/ChatPanel/VBox"]
+layout_mode = 2
+
+[node name="InputField" type="LineEdit" parent="BottomLeftActions/ChatPanel/VBox/InputRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Chat..."
+
+[node name="SendButton" type="Button" parent="BottomLeftActions/ChatPanel/VBox/InputRow"]
+layout_mode = 2
+text = "Send"
+
+[node name="ChatToggleButton" type="Button" parent="BottomLeftActions"]
+custom_minimum_size = Vector2(160, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 20
+text = "Chat Button"
+
+[node name="ResultPanel" type="PanelContainer" parent="."]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -103,63 +166,10 @@ offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ResultLabel" type="RichTextLabel" parent="ResultPanel" unique_id=1551269286]
+[node name="ResultLabel" type="RichTextLabel" parent="ResultPanel"]
 layout_mode = 2
 bbcode_enabled = true
 fit_content = true
 
-[node name="ChatToggleButton" type="Button" parent="." unique_id=441942417]
-custom_minimum_size = Vector2(60, 50)
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -70.0
-offset_top = 10.0
-offset_right = -10.0
-offset_bottom = 60.0
-grow_horizontal = 0
-theme_override_font_sizes/font_size = 22
-text = "C"
-
-[node name="ChatPanel" type="PanelContainer" parent="." unique_id=944284331]
-visible = false
-layout_mode = 1
-anchors_preset = 11
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -340.0
-offset_top = 70.0
-offset_bottom = -100.0
-grow_horizontal = 0
-grow_vertical = 2
-script = ExtResource("2")
-
-[node name="VBox" type="VBoxContainer" parent="ChatPanel" unique_id=1390584010]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="ScrollContainer" type="ScrollContainer" parent="ChatPanel/VBox" unique_id=1634447683]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="MessagesContainer" type="VBoxContainer" parent="ChatPanel/VBox/ScrollContainer" unique_id=1970954970]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="InputRow" type="HBoxContainer" parent="ChatPanel/VBox" unique_id=2077176305]
-layout_mode = 2
-
-[node name="InputField" type="LineEdit" parent="ChatPanel/VBox/InputRow" unique_id=717649353]
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "Chat..."
-
-[node name="SendButton" type="Button" parent="ChatPanel/VBox/InputRow" unique_id=1422785085]
-layout_mode = 2
-text = "Send"
-
 [connection signal="pressed" from="GuessPanel/GuessVBox/SubmitButton" to="." method="_on_submit_pressed"]
-[connection signal="pressed" from="GuessPanel/GuessVBox/PowerupButton" to="." method="_on_powerup_pressed"]
-[connection signal="pressed" from="ChatToggleButton" to="." method="_on_chat_toggle"]
+[connection signal="pressed" from="BottomLeftActions/ChatToggleButton" to="." method="_on_chat_toggle"]

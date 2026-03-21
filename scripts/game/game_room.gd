@@ -14,6 +14,7 @@ func _ready() -> void:
 	_add_hud()
 	_connect_signals()
 	_reveal_camera()
+	_spawn_existing_seats()
 
 func _reveal_camera() -> void:
 	camera.position = Vector3(0, 9.0, 10.0)
@@ -31,6 +32,11 @@ func _add_hud() -> void:
 func _connect_signals() -> void:
 	NakamaManager.message_received.connect(_on_message_received)
 	GameState.player_eliminated.connect(_on_player_eliminated)
+
+func _spawn_existing_seats() -> void:
+	for pid in GameState.players:
+		var p: Dictionary = GameState.players[pid]
+		_spawn_seat_for_player(pid, p.get("username", "?"), p.get("lives", 10))
 
 func _on_message_received(op_code: int, data: Dictionary) -> void:
 	if op_code == 6:

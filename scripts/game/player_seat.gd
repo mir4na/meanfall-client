@@ -30,7 +30,7 @@ func setup(player_id: String, username: String, lives: int) -> void:
 	_lives_label.position = Vector3(0, 2.6, 0)
 	add_child(_lives_label)
 	
-	var body_mesh: MeshInstance3D = _character.get_node("Body")
+	var body_mesh: MeshInstance3D = _character.get_node("Torso")
 	var mat: StandardMaterial3D = body_mesh.mesh.surface_get_material(0).duplicate()
 	mat.albedo_color = _get_player_color(player_id)
 	body_mesh.set_surface_override_material(0, mat)
@@ -55,7 +55,7 @@ func _on_player_eliminated(player_id: String) -> void:
 		return
 	_lives_label.modulate = Color(0.4, 0.4, 0.4)
 	_name_label.modulate = Color(0.4, 0.4, 0.4)
-	var body_mesh: MeshInstance3D = _character.get_node("Body")
+	var body_mesh: MeshInstance3D = _character.get_node("Torso")
 	var mat: StandardMaterial3D = body_mesh.get_surface_override_material(0)
 	if mat:
 		var tween := create_tween()

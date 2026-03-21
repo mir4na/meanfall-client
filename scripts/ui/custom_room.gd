@@ -14,9 +14,12 @@ extends Control
 @onready var join_button: Button = $Center/Panel/VBox/JoinPanel/JoinButton
 @onready var room_code_display: Label = $Center/Panel/VBox/CreatePanel/RoomCodeDisplay
 
+var _waiting_for_players := false
+
 func _ready() -> void:
 	NakamaManager.match_joined.connect(_on_match_joined)
 	NakamaManager.session_failed.connect(_on_error)
+	GameState.state_changed.connect(_on_game_state_changed)
 	_update_labels()
 
 func _on_create_tab_pressed() -> void:
@@ -75,10 +78,28 @@ func _on_join_pressed() -> void:
 	await NakamaManager.join_match(result.get("matchId", ""))
 
 func _on_match_joined(_match_id: String) -> void:
-	SceneTransition.fade_to_scene("res://scenes/game/elevator_intro/elevator_intro.tscn", SceneTransition.Style.RADIAL, true)
+	_waiting_for_players = true
+	_update_status_label()
+	if GameState.round_number > 0:
+		_waiting_for_players = false
+		SceneTransition.fade_to_scene("res://scenes/game/elevator_intro/elevator_intro.tscn", SceneTransition.Style.RADIAL, true)
+
+func _on_game_state_changed() -> void:
+	if not _waiting_for_players:
+		return
+	_update_status_label()
+	if GameState.round_number > 0:
+		_waiting_for_players = false
+		SceneTransition.fade_to_scene("res://scenes/game/elevator_intro/elevator_intro.tscn", SceneTransition.Style.RADIAL, true)
+
+func _update_status_label() -> void:
+	var count = GameState.get_alive_players().size()
+	status_label.text = "Waiting for players... (" + str(count) + "/3)"
 
 func _on_back_pressed() -> void:
+	_waiting_for_players = false
 	SceneTransition.fade_to_scene("res://scenes/ui/main_menu/main_menu.tscn")
 
 func _on_error(message: String) -> void:
+	_waiting_for_players = false
 	status_label.text = "Error: " + message

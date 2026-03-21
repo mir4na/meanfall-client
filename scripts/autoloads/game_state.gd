@@ -22,6 +22,9 @@ var room_code: String = ""
 var local_power_up: String = "none"
 var guess_start_time: float = 0.0
 
+func _ready() -> void:
+	NakamaManager.message_received.connect(_on_message_received)
+
 func reset() -> void:
 	current_match_id = ""
 	current_phase = GamePhase.NONE
@@ -68,3 +71,25 @@ func start_guess_timer() -> void:
 
 func get_guess_elapsed_ms() -> float:
 	return Time.get_ticks_msec() - guess_start_time
+
+func _on_message_received(op: int, data: Dictionary) -> void:
+	if op == 1:
+		round_number = data.get("roundNumber", 1)
+		start_guess_timer()
+		local_power_up = data.get("activeEvent", "none")
+		round_changed.emit(round_number)
+		state_changed.emit()
+	elif op == 3:
+		var prs: Dictionary = data.get("playerResults", {})
+		for pid in prs:
+			update_player(pid, prs[pid])
+		state_changed.emit()
+	elif op == 6:
+		update_player(data.get("userId", ""), data)
+	elif op == 9:
+		var plist: Array = data.get("players", [])
+		for pdata in plist:
+			update_player(pdata.get("userId", ""), pdata)
+		round_number = data.get("roundNumber", 1)
+		local_power_up = data.get("activeEvent", "none")
+		state_changed.emit()

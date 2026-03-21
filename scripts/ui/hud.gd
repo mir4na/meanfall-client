@@ -6,23 +6,24 @@ const OP_GAME_OVER := 4
 const OP_CHAT_MESSAGE := 5
 const OP_PLAYER_JOINED := 6
 const OP_PLAYER_LEFT := 7
-const OP_POWERUP_ACTIVATE := 8
 const OP_RECONNECT_STATE := 9
 
 const TIMER_WARN_THRESHOLD := 5.0
 
-@onready var round_label: Label = $TopBar/RoundLabel
-@onready var timer_label: Label = $TopBar/TimerLabel
-@onready var players_container: HBoxContainer = $PlayersBar/PlayersContainer
+@onready var local_name_label: Label = $TopLeftInfo/LocalPlayerName
+@onready var local_lives_label: Label = $TopLeftInfo/LocalPlayerLives
+@onready var timer_label: Label = $TopCenterInfo/TimerLabel
+@onready var event_label: Label = $TopCenterInfo/EventLabel
 @onready var guess_panel: Control = $GuessPanel
 @onready var guess_input: LineEdit = $GuessPanel/GuessVBox/GuessInput
 @onready var submit_button: Button = $GuessPanel/GuessVBox/SubmitButton
-@onready var powerup_button: Button = $GuessPanel/GuessVBox/PowerupButton
-@onready var powerup_label: Label = $GuessPanel/GuessVBox/PowerupLabel
+@onready var right_panel: PanelContainer = $RightPanel
+@onready var players_container: VBoxContainer = $RightPanel/ScrollContainer/PlayersContainer
 @onready var result_panel: Control = $ResultPanel
 @onready var result_label: RichTextLabel = $ResultPanel/ResultLabel
-@onready var chat_panel: Control = $ChatPanel
-@onready var chat_toggle: Button = $ChatToggleButton
+@onready var chat_panel: Control = $BottomLeftActions/ChatPanel
+@onready var chat_toggle: Button = $BottomLeftActions/ChatToggleButton
+
 @onready var player_life_cells: Dictionary = {}
 
 const C_PANEL      := Color(0.10, 0.08, 0.22, 0.95)
@@ -33,7 +34,6 @@ const C_WHITE      := Color(1.0,  1.0,  1.0,  1.0)
 var _timer_remaining: float = 30.0
 var _is_guessing := false
 var _has_guessed := false
-var _active_power_up := "none"
 
 func _ready() -> void:
 	NakamaManager.message_received.connect(_on_message_received)
@@ -42,9 +42,18 @@ func _ready() -> void:
 	guess_panel.visible = false
 	chat_panel.visible = false
 	_apply_styles()
+	_sync_initial_state()
+
+func _sync_initial_state() -> void:
+	local_name_label.text = GameState.local_player_username
+	var local_p = GameState.get_player(GameState.local_player_id)
+	if local_p.has("lives"):
+		local_lives_label.text = "Lives: " + str(local_p["lives"])
+	_rebuild_player_cells()
+	_update_event_ui()
 
 func _apply_styles() -> void:
-	var panels = [guess_panel, result_panel, chat_panel, $PlayersBar]
+	var panels = [guess_panel, result_panel, chat_panel, right_panel]
 	for p in panels:
 		var sb := StyleBoxFlat.new()
 		sb.bg_color = C_PANEL
@@ -74,7 +83,7 @@ func _apply_styles() -> void:
 		inp.add_theme_stylebox_override("focus", sb_f)
 		inp.add_theme_color_override("font_color", C_WHITE)
 
-	var btns = [submit_button, powerup_button, chat_toggle, chat_panel.get_node_or_null("VBox/InputRow/SendButton")]
+	var btns = [submit_button, chat_toggle, chat_panel.get_node_or_null("VBox/InputRow/SendButton")]
 	for btn in btns:
 		if not btn: continue
 		var sb_n := StyleBoxFlat.new()
@@ -111,19 +120,11 @@ func _on_message_received(op_code: int, data: Dictionary) -> void:
 		OP_GAME_OVER:
 			_handle_game_over(data)
 		OP_PLAYER_JOINED:
-			_handle_player_joined(data)
-		OP_PLAYER_LEFT:
-			_handle_player_left(data)
-		OP_POWERUP_ACTIVATE:
-			_handle_powerup_activate(data)
+			_rebuild_player_cells()
 		OP_RECONNECT_STATE:
-			_handle_reconnect_state(data)
+			_sync_initial_state()
 
 func _handle_round_start(data: Dictionary) -> void:
-	var round_num: int = data.get("roundNumber", 1)
-	GameState.round_number = round_num
-	GameState.start_guess_timer()
-	round_label.text = "Round " + str(round_num)
 	result_panel.visible = false
 	guess_panel.visible = true
 	guess_input.text = ""
@@ -132,11 +133,7 @@ func _handle_round_start(data: Dictionary) -> void:
 	_has_guessed = false
 	_timer_remaining = 30.0
 	_is_guessing = true
-	var power_ups: Dictionary = data.get("powerUps", {})
-	_active_power_up = power_ups.get(GameState.local_player_id, "none")
-	GameState.local_power_up = _active_power_up
-	_update_powerup_ui()
-	_rebuild_player_cells()
+	_update_event_ui()
 
 func _handle_round_result(data: Dictionary) -> void:
 	_is_guessing = false
@@ -152,9 +149,16 @@ func _handle_round_result(data: Dictionary) -> void:
 		result_text = "Average: " + str(snapped(target, 0.01)) + "\n"
 	for player_id in player_results:
 		var pr: Dictionary = player_results[player_id]
-		GameState.update_player(player_id, pr)
 		var name_str: String = pr.get("username", "?")
-		var guess_str: String = str(pr.get("guessValue", 0))
+		var guess_val = pr.get("guessValue", 0)
+		var guess_str := ""
+		if typeof(guess_val) == TYPE_ARRAY:
+			if guess_val.size() == 2:
+				guess_str = str(guess_val[0]) + " & " + str(guess_val[1])
+			elif guess_val.size() == 1:
+				guess_str = str(guess_val[0])
+		else:
+			guess_str = str(guess_val)
 		var lives_str: String = str(pr.get("lives", 0))
 		var winner_tag: String = " ★" if pr.get("isWinner", false) else ""
 		result_text += name_str + ": " + guess_str + winner_tag + " (lives: " + lives_str + ")\n"
@@ -176,26 +180,6 @@ func _handle_game_over(data: Dictionary) -> void:
 	GameState.reset()
 	SceneTransition.fade_to_scene("res://scenes/ui/main_menu/main_menu.tscn")
 
-func _handle_player_joined(data: Dictionary) -> void:
-	var player_id: String = data.get("userId", "")
-	GameState.update_player(player_id, data)
-	_rebuild_player_cells()
-
-func _handle_player_left(data: Dictionary) -> void:
-	pass
-
-func _handle_powerup_activate(data: Dictionary) -> void:
-	pass
-
-func _handle_reconnect_state(data: Dictionary) -> void:
-	var player_list: Array = data.get("players", [])
-	for pdata in player_list:
-		var pid: String = pdata.get("userId", "")
-		GameState.update_player(pid, pdata)
-	GameState.round_number = data.get("roundNumber", 1)
-	round_label.text = "Round " + str(GameState.round_number)
-	_rebuild_player_cells()
-
 func _rebuild_player_cells() -> void:
 	for child in players_container.get_children():
 		child.queue_free()
@@ -207,25 +191,27 @@ func _rebuild_player_cells() -> void:
 		player_life_cells[player_id] = cell
 
 func _create_player_cell(player_id: String, pdata: Dictionary) -> Control:
-	var vbox := VBoxContainer.new()
+	var hbox := HBoxContainer.new()
 	var name_lbl := Label.new()
 	name_lbl.text = str(pdata.get("username", "?"))
-	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	name_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var lives_lbl := Label.new()
 	lives_lbl.text = "♥ " + str(pdata.get("lives", 10))
 	lives_lbl.name = "LivesLabel"
-	lives_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lives_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	if not pdata.get("isAlive", true):
 		lives_lbl.modulate = Color(0.4, 0.4, 0.4)
-	vbox.add_child(name_lbl)
-	vbox.add_child(lives_lbl)
-	vbox.name = player_id
-	return vbox
+	hbox.add_child(name_lbl)
+	hbox.add_child(lives_lbl)
+	hbox.name = player_id
+	return hbox
 
 func _on_lives_updated(player_id: String, lives: int) -> void:
+	if player_id == GameState.local_player_id:
+		local_lives_label.text = "Lives: " + str(lives)
 	if not player_life_cells.has(player_id):
 		return
-	var cell: VBoxContainer = player_life_cells[player_id]
+	var cell: HBoxContainer = player_life_cells[player_id]
 	var lbl: Label = cell.get_node_or_null("LivesLabel")
 	if lbl:
 		lbl.text = "♥ " + str(lives)
@@ -235,42 +221,77 @@ func _on_lives_updated(player_id: String, lives: int) -> void:
 		if lives <= 0:
 			lbl.modulate = Color(0.4, 0.4, 0.4)
 
-func _update_powerup_ui() -> void:
-	if _active_power_up == "none":
-		powerup_button.visible = false
-		powerup_label.text = ""
+func _update_event_ui() -> void:
+	if GameState.round_number == 0:
+		event_label.text = "Waiting for players..."
+		event_label.modulate = Color(0.7, 0.7, 0.7)
+		guess_input.visible = false
+		submit_button.visible = false
+		return
+
+	var ev = GameState.local_power_up
+	var text := "Round " + str(GameState.round_number)
+	var c := Color.WHITE
+	if ev != "none" and ev != "":
+		text += " | "
+		match ev:
+			"double_damage":
+				text += "Double Damage"
+				c = Color(1.0, 0.2, 0.2)
+			"life_steal":
+				text += "Life Steal"
+				c = Color(0.2, 0.8, 0.2)
+			"chaos_roll":
+				text += "Chaos Roll"
+				c = Color(0.8, 0.2, 0.8)
+			"reverse_outcome":
+				text += "Reverse Outcome"
+				c = Color(0.8, 0.8, 0.2)
+			"double_guess":
+				text += "Double Guess"
+				c = Color(0.2, 0.6, 1.0)
+	event_label.text = text
+	event_label.modulate = c
+	if ev == "chaos_roll":
+		guess_input.visible = false
+		submit_button.visible = false
 	else:
-		powerup_button.visible = true
-		var pu := PowerUp.from_string(_active_power_up)
-		powerup_label.text = pu.display_name
-		powerup_button.modulate = pu.color
+		guess_input.visible = true
+		submit_button.visible = true
 
 func _on_submit_pressed() -> void:
 	if _has_guessed:
 		return
 	var raw_text := guess_input.text.strip_edges()
-	if not raw_text.is_valid_int():
-		return
-	var value := clampi(int(raw_text), 0, 100)
-	_submit_guess(value)
+	if GameState.local_power_up == "double_guess":
+		var parts := raw_text.split(" ", false)
+		if parts.size() < 2:
+			return
+		if not parts[0].is_valid_int() or not parts[1].is_valid_int():
+			return
+		var v1 := clampi(parts[0].to_int(), 0, 100)
+		var v2 := clampi(parts[1].to_int(), 0, 100)
+		_submit_payload([v1, v2])
+	else:
+		if not raw_text.is_valid_int():
+			return
+		var value := clampi(raw_text.to_int(), 0, 100)
+		_submit_payload(value)
 
 func _auto_submit() -> void:
 	if _has_guessed:
 		return
-	_submit_guess(randi() % 101)
+	if GameState.local_power_up == "double_guess":
+		_submit_payload([randi() % 101, randi() % 101])
+	elif GameState.local_power_up != "chaos_roll":
+		_submit_payload(randi() % 101)
 
-func _submit_guess(value: int) -> void:
+func _submit_payload(val: Variant) -> void:
 	_has_guessed = true
 	_is_guessing = false
 	guess_input.editable = false
 	submit_button.disabled = true
-	NakamaManager.send_message(2, {"value": value})
-
-func _on_powerup_pressed() -> void:
-	if _active_power_up == "none":
-		return
-	NakamaManager.send_message(8, {"powerUpType": _active_power_up})
-	powerup_button.disabled = true
+	NakamaManager.send_message(2, {"value": val})
 
 func _on_chat_toggle() -> void:
 	chat_panel.visible = not chat_panel.visible
