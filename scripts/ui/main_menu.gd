@@ -18,6 +18,23 @@ func _ready() -> void:
 	_animate_in()
 	NakamaManager.session_connected.connect(_on_session_connected)
 	_refresh_profile()
+	_check_and_rejoin()
+
+func _check_and_rejoin() -> void:
+	if GameState.session == null:
+		return
+	var result = await NakamaManager.rpc_call("check_active_match", {})
+	if result.has("error") or not result.has("matchId"):
+		return
+	var match_id: String = result["matchId"]
+	if match_id.is_empty():
+		return
+	GameState.reset()
+	await NakamaManager.join_match(match_id)
+	if GameState.round_number > 0:
+		SceneTransition.fade_to_scene("res://scenes/game/game_room/game_room.tscn", SceneTransition.Style.RADIAL, true)
+	else:
+		SceneTransition.fade_to_scene("res://scenes/game/elevator_intro/elevator_intro.tscn", SceneTransition.Style.RADIAL, true)
 
 func _apply_shaders() -> void:
 	ShaderFX.apply_bg_noise(bg_top, 0.8)

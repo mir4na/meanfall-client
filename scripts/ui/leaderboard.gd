@@ -31,7 +31,7 @@ func _populate(records: Array) -> void:
 		name_label.text = str(record.get("username", "Unknown"))
 		name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		var elo_label := Label.new()
-		elo_label.text = str(record.get("elo", 0))
+		elo_label.text = str(record.get("points", 0))
 		elo_label.custom_minimum_size.x = 80.0
 		var league_label := Label.new()
 		league_label.text = str(record.get("league", ""))

@@ -26,6 +26,7 @@ func _process(delta: float) -> void:
 		status_label.text = "Searching for opponents" + ".".repeat(_dot_count)
 
 func _start_matchmaking() -> void:
+	GameState.reset()
 	_searching = true
 	status_label.text = "Searching for opponents"
 	var result = await NakamaManager.rpc_call("find_or_create_ranked_match", {})

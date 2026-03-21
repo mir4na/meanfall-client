@@ -30,10 +30,14 @@ func setup(player_id: String, username: String, lives: int) -> void:
 	_lives_label.position = Vector3(0, 2.6, 0)
 	add_child(_lives_label)
 	
-	var body_mesh: MeshInstance3D = _character.get_node("Torso")
-	var mat: StandardMaterial3D = body_mesh.mesh.surface_get_material(0).duplicate()
-	mat.albedo_color = _get_player_color(player_id)
-	body_mesh.set_surface_override_material(0, mat)
+	var parts = ["Torso", "Torso/ArmL", "Torso/ArmR", "LegL", "LegR"]
+	var player_color = _get_player_color(player_id)
+	
+	for part_name in parts:
+		var mesh_inst: MeshInstance3D = _character.get_node(part_name)
+		var mat: StandardMaterial3D = mesh_inst.mesh.surface_get_material(0).duplicate()
+		mat.albedo_color = player_color
+		mesh_inst.set_surface_override_material(0, mat)
 	
 	_connect_signals()
 
@@ -55,24 +59,18 @@ func _on_player_eliminated(player_id: String) -> void:
 		return
 	_lives_label.modulate = Color(0.4, 0.4, 0.4)
 	_name_label.modulate = Color(0.4, 0.4, 0.4)
-	var body_mesh: MeshInstance3D = _character.get_node("Torso")
-	var mat: StandardMaterial3D = body_mesh.get_surface_override_material(0)
-	if mat:
-		var tween := create_tween()
-		tween.tween_property(mat, "albedo_color", Color(0.2, 0.2, 0.2), 0.6)
+	var parts = ["Torso", "Torso/ArmL", "Torso/ArmR", "LegL", "LegR"]
+	var tween := create_tween().set_parallel(true)
+	for part_name in parts:
+		var mesh_inst: MeshInstance3D = _character.get_node(part_name)
+		var mat: StandardMaterial3D = mesh_inst.get_surface_override_material(0)
+		if mat:
+			tween.tween_property(mat, "albedo_color", Color(0.2, 0.2, 0.2), 0.6)
 
 func _get_player_color(player_id: String) -> Color:
-	var colors := [
-		Color(0.2, 0.6, 1.0),
-		Color(1.0, 0.3, 0.3),
-		Color(0.3, 0.9, 0.4),
-		Color(1.0, 0.8, 0.1),
-		Color(0.8, 0.3, 0.9),
-		Color(0.2, 0.9, 0.9),
-		Color(1.0, 0.5, 0.1),
-		Color(0.9, 0.9, 0.4),
-		Color(0.5, 0.3, 0.8),
-		Color(0.9, 0.5, 0.7),
-	]
-	var hash_val := player_id.hash()
-	return colors[abs(hash_val) % colors.size()]
+	var rng := RandomNumberGenerator.new()
+	rng.seed = player_id.hash()
+	var h = rng.randf()
+	var s = rng.randf_range(0.6, 0.9)
+	var v = rng.randf_range(0.7, 1.0)
+	return Color.from_hsv(h, s, v)

@@ -46,6 +46,7 @@ func _update_labels() -> void:
 	_on_bot_count_changed(bot_count_slider.value)
 
 func _on_create_pressed() -> void:
+	GameState.reset()
 	create_button.disabled = true
 	status_label.text = "Creating room..."
 	var result = await NakamaManager.rpc_call("create_custom_room", {
@@ -63,6 +64,7 @@ func _on_create_pressed() -> void:
 	await NakamaManager.join_match(result.get("matchId", ""))
 
 func _on_join_pressed() -> void:
+	GameState.reset()
 	var code := room_code_input.text.strip_edges().to_upper()
 	if code.length() != 6:
 		status_label.text = "Enter a valid 6-character room code"

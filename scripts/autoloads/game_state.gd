@@ -86,10 +86,11 @@ func _on_message_received(op: int, data: Dictionary) -> void:
 		state_changed.emit()
 	elif op == 6:
 		update_player(data.get("userId", ""), data)
+		state_changed.emit()
 	elif op == 9:
 		var plist: Array = data.get("players", [])
 		for pdata in plist:
 			update_player(pdata.get("userId", ""), pdata)
-		round_number = data.get("roundNumber", 1)
+		round_number = data.get("roundNumber", 0)
 		local_power_up = data.get("activeEvent", "none")
 		state_changed.emit()

@@ -13,16 +13,10 @@ var _hud: Control
 func _ready() -> void:
 	_add_hud()
 	_connect_signals()
-	_reveal_camera()
 	_spawn_existing_seats()
 
-func _reveal_camera() -> void:
-	camera.position = Vector3(0, 9.0, 10.0)
-	camera.rotation_degrees.x = -45.0
-	var tween := create_tween()
-	tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tween.tween_property(camera, "position", Vector3(0, 1.5, 5.0), 2.0)
-	tween.parallel().tween_property(camera, "rotation_degrees:x", -20.0, 2.0)
+func _remove_camera_tween() -> void:
+	pass
 
 func _add_hud() -> void:
 	var hud_scene := load(HUD_SCENE)
@@ -58,6 +52,18 @@ func _spawn_seat_for_player(player_id: String, username: String, lives: int) -> 
 	seat.rotation.y = -angle
 	seats_container.add_child(seat)
 	_player_seats[player_id] = seat
+	if player_id == GameState.local_player_id:
+		var char_node: Node3D = seat.get_node_or_null("PlayerCharacter")
+		if char_node:
+			var head: Node3D = char_node.get_node("Head")
+			var cam_parent = camera.get_parent()
+			if cam_parent:
+				cam_parent.remove_child(camera)
+			head.add_child(camera)
+			camera.position = Vector3(0, 0.05, 0.25)
+			camera.rotation_degrees = Vector3(0, 180, 0)
+			if head.has_node("Skull"): head.get_node("Skull").cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
+			if head.has_node("Visor"): head.get_node("Visor").cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
 
 func _on_player_eliminated(player_id: String) -> void:
 	if _player_seats.has(player_id):
