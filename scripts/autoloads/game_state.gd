@@ -30,6 +30,10 @@ func reset() -> void:
 	current_phase = GamePhase.NONE
 	round_number = 0
 	players.clear()
+	max_lives = 10
+	max_players = 10
+	is_ranked = false
+	room_code = ""
 	local_power_up = "none"
 	guess_start_time = 0.0
 	state_changed.emit()
@@ -55,6 +59,12 @@ func update_player(player_id: String, data: Dictionary) -> void:
 		lives_updated.emit(player_id, data["lives"])
 	if data.get("isAlive", true) == false:
 		player_eliminated.emit(player_id)
+
+func remove_player(player_id: String) -> void:
+	if not players.has(player_id):
+		return
+	players.erase(player_id)
+	state_changed.emit()
 
 func get_alive_players() -> Array:
 	var result := []
@@ -87,10 +97,17 @@ func _on_message_received(op: int, data: Dictionary) -> void:
 	elif op == 6:
 		update_player(data.get("userId", ""), data)
 		state_changed.emit()
+	elif op == 7:
+		remove_player(data.get("userId", ""))
 	elif op == 9:
 		var plist: Array = data.get("players", [])
+		players.clear()
 		for pdata in plist:
 			update_player(pdata.get("userId", ""), pdata)
 		round_number = data.get("roundNumber", 0)
+		set_phase(data.get("phase", "none"))
 		local_power_up = data.get("activeEvent", "none")
+		max_lives = data.get("maxLives", 10)
+		max_players = data.get("maxPlayers", 10)
+		is_ranked = data.get("isRanked", false)
 		state_changed.emit()

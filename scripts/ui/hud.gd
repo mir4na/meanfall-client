@@ -51,6 +51,24 @@ func _sync_initial_state() -> void:
 		local_lives_label.text = "Lives: " + str(local_p["lives"])
 	_rebuild_player_cells()
 	_update_event_ui()
+	
+	if GameState.round_number > 0 and local_p.get("isAlive", true):
+		var guess_val = local_p.get("guessValue", -1)
+		var has_guessed = false
+		if typeof(guess_val) == TYPE_ARRAY or guess_val != -1:
+			has_guessed = true
+		if not has_guessed:
+			guess_panel.visible = true
+			guess_input.editable = true
+			submit_button.disabled = false
+			_has_guessed = false
+			_is_guessing = true
+			if GameState.local_power_up == "double_guess":
+				guess_input.placeholder_text = "e.g. 30 70"
+			else:
+				guess_input.placeholder_text = "Tebakan Anda"
+			var elapsed_sec = GameState.get_guess_elapsed_ms() / 1000.0
+			_timer_remaining = maxf(0.0, 35.0 - elapsed_sec)
 
 func _apply_styles() -> void:
 	var panels = [guess_panel, result_panel, chat_panel, right_panel]
@@ -121,6 +139,8 @@ func _on_message_received(op_code: int, data: Dictionary) -> void:
 			_handle_game_over(data)
 		OP_PLAYER_JOINED:
 			_rebuild_player_cells()
+		OP_PLAYER_LEFT:
+			_rebuild_player_cells()
 		OP_RECONNECT_STATE:
 			_sync_initial_state()
 
@@ -134,6 +154,10 @@ func _handle_round_start(data: Dictionary) -> void:
 	_timer_remaining = 30.0
 	_is_guessing = true
 	_update_event_ui()
+	if GameState.local_power_up == "double_guess":
+		guess_input.placeholder_text = "e.g. 30 70"
+	else:
+		guess_input.placeholder_text = "Your Guess"
 
 func _handle_round_result(data: Dictionary) -> void:
 	_is_guessing = false
@@ -261,6 +285,9 @@ func _update_event_ui() -> void:
 
 func _on_submit_pressed() -> void:
 	if _has_guessed:
+		return
+	var local_p = GameState.get_player(GameState.local_player_id)
+	if not local_p.get("isAlive", true):
 		return
 	var raw_text := guess_input.text.strip_edges()
 	if GameState.local_power_up == "double_guess":

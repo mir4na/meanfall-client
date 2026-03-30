@@ -18,7 +18,6 @@ func _ready() -> void:
 	_animate_in()
 	NakamaManager.session_connected.connect(_on_session_connected)
 	_refresh_profile()
-	_check_and_rejoin()
 
 func _check_and_rejoin() -> void:
 	if GameState.session == null:
@@ -166,3 +165,4 @@ func _on_quit_pressed() -> void:
 
 func _on_session_connected(_session) -> void:
 	_refresh_profile()
+	_check_and_rejoin()

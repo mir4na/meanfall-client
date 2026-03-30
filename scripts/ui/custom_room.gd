@@ -96,10 +96,12 @@ func _on_game_state_changed() -> void:
 
 func _update_status_label() -> void:
 	var count = GameState.get_alive_players().size()
-	status_label.text = "Waiting for players... (" + str(count) + "/3)"
+	status_label.text = "Waiting for players... (" + str(count) + "/" + str(GameState.max_players) + ")"
 
 func _on_back_pressed() -> void:
 	_waiting_for_players = false
+	await NakamaManager.leave_match()
+	GameState.reset()
 	SceneTransition.fade_to_scene("res://scenes/ui/main_menu/main_menu.tscn")
 
 func _on_error(message: String) -> void:

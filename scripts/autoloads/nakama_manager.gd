@@ -25,6 +25,7 @@ var _socket
 var _session
 var _reconnect_attempts: int = 0
 var _reconnect_timer: Timer
+var _joining_match_id: String = ""
 
 func _ready() -> void:
 	_client = Nakama.create_client(NAKAMA_SERVER_KEY, NAKAMA_HOST, NAKAMA_PORT, NAKAMA_SCHEME)
@@ -173,9 +174,11 @@ func connect_socket() -> void:
 	await _socket.connect_async(_session)
 
 func join_match(match_id: String) -> void:
+	_joining_match_id = match_id
 	if _socket == null:
 		await connect_socket()
 	var result = await _socket.join_match_async(match_id)
+	_joining_match_id = ""
 	if result.is_exception():
 		session_failed.emit(result.get_exception().message)
 		return
@@ -183,9 +186,14 @@ func join_match(match_id: String) -> void:
 	match_joined.emit(match_id)
 
 func leave_match() -> void:
-	if _socket != null and GameState.current_match_id != "":
-		await _socket.leave_match_async(GameState.current_match_id)
-		GameState.current_match_id = ""
+	var match_to_leave := GameState.current_match_id
+	if match_to_leave == "" and _joining_match_id != "":
+		match_to_leave = _joining_match_id
+	if _socket != null and match_to_leave != "":
+		_joining_match_id = ""
+		await _socket.leave_match_async(match_to_leave)
+		if GameState.current_match_id == match_to_leave:
+			GameState.current_match_id = ""
 
 func send_message(op_code: int, data: Dictionary) -> void:
 	if _socket == null or GameState.current_match_id == "":

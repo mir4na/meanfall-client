@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://sfbmnkxguibx" path="res://scripts/ui/hud.gd" id="1"]
 [ext_resource type="Script" uid="uid://cxpjbatcl1m1" path="res://scripts/ui/chat_panel.gd" id="2"]
 
-[node name="HUD" type="Control"]
+[node name="HUD" type="Control" unique_id=755825352]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,22 +12,22 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1")
 
-[node name="TopLeftInfo" type="VBoxContainer" parent="."]
+[node name="TopLeftInfo" type="VBoxContainer" parent="." unique_id=366338075]
 layout_mode = 1
 offset_left = 32.0
 offset_top = 32.0
 
-[node name="LocalPlayerName" type="Label" parent="TopLeftInfo"]
+[node name="LocalPlayerName" type="Label" parent="TopLeftInfo" unique_id=1039009870]
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = "Player"
 
-[node name="LocalPlayerLives" type="Label" parent="TopLeftInfo"]
+[node name="LocalPlayerLives" type="Label" parent="TopLeftInfo" unique_id=212141216]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Lives: 10"
 
-[node name="TopCenterInfo" type="VBoxContainer" parent="."]
+[node name="TopCenterInfo" type="VBoxContainer" parent="." unique_id=841208129]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -37,18 +37,18 @@ offset_top = 32.0
 offset_right = 200.0
 grow_horizontal = 2
 
-[node name="TimerLabel" type="Label" parent="TopCenterInfo"]
+[node name="TimerLabel" type="Label" parent="TopCenterInfo" unique_id=1052034145]
 layout_mode = 2
 theme_override_font_sizes/font_size = 56
-horizontal_alignment = 1
 text = "30"
+horizontal_alignment = 1
 
-[node name="EventLabel" type="Label" parent="TopCenterInfo"]
+[node name="EventLabel" type="Label" parent="TopCenterInfo" unique_id=1456851492]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 horizontal_alignment = 1
 
-[node name="GuessPanel" type="PanelContainer" parent="."]
+[node name="GuessPanel" type="PanelContainer" parent="." unique_id=665048847]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -62,25 +62,25 @@ offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="GuessVBox" type="VBoxContainer" parent="GuessPanel"]
+[node name="GuessVBox" type="VBoxContainer" parent="GuessPanel" unique_id=1596497220]
 layout_mode = 2
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="GuessInput" type="LineEdit" parent="GuessPanel/GuessVBox"]
+[node name="GuessInput" type="LineEdit" parent="GuessPanel/GuessVBox" unique_id=1477489613]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-placeholder_text = "Tebakan Anda"
+placeholder_text = "Your Guess"
 alignment = 1
 
-[node name="SubmitButton" type="Button" parent="GuessPanel/GuessVBox"]
+[node name="SubmitButton" type="Button" parent="GuessPanel/GuessVBox" unique_id=890980692]
 custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "Submit Angka"
+text = "Submit"
 
-[node name="RightPanel" type="PanelContainer" parent="."]
+[node name="RightPanel" type="PanelContainer" parent="." unique_id=1885301310]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -93,17 +93,17 @@ offset_bottom = -32.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="RightPanel"]
+[node name="ScrollContainer" type="ScrollContainer" parent="RightPanel" unique_id=1623343754]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="PlayersContainer" type="VBoxContainer" parent="RightPanel/ScrollContainer"]
+[node name="PlayersContainer" type="VBoxContainer" parent="RightPanel/ScrollContainer" unique_id=1526372759]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 8
 
-[node name="BottomLeftActions" type="VBoxContainer" parent="."]
+[node name="BottomLeftActions" type="VBoxContainer" parent="." unique_id=714752119]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -115,43 +115,43 @@ offset_bottom = -32.0
 grow_vertical = 0
 alignment = 2
 
-[node name="ChatPanel" type="PanelContainer" parent="BottomLeftActions"]
+[node name="ChatPanel" type="PanelContainer" parent="BottomLeftActions" unique_id=810344778]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("2")
 
-[node name="VBox" type="VBoxContainer" parent="BottomLeftActions/ChatPanel"]
+[node name="VBox" type="VBoxContainer" parent="BottomLeftActions/ChatPanel" unique_id=641779536]
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="BottomLeftActions/ChatPanel/VBox"]
+[node name="ScrollContainer" type="ScrollContainer" parent="BottomLeftActions/ChatPanel/VBox" unique_id=1136608568]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MessagesContainer" type="VBoxContainer" parent="BottomLeftActions/ChatPanel/VBox/ScrollContainer"]
+[node name="MessagesContainer" type="VBoxContainer" parent="BottomLeftActions/ChatPanel/VBox/ScrollContainer" unique_id=1772110638]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="InputRow" type="HBoxContainer" parent="BottomLeftActions/ChatPanel/VBox"]
+[node name="InputRow" type="HBoxContainer" parent="BottomLeftActions/ChatPanel/VBox" unique_id=1685766410]
 layout_mode = 2
 
-[node name="InputField" type="LineEdit" parent="BottomLeftActions/ChatPanel/VBox/InputRow"]
+[node name="InputField" type="LineEdit" parent="BottomLeftActions/ChatPanel/VBox/InputRow" unique_id=1037271196]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Chat..."
 
-[node name="SendButton" type="Button" parent="BottomLeftActions/ChatPanel/VBox/InputRow"]
+[node name="SendButton" type="Button" parent="BottomLeftActions/ChatPanel/VBox/InputRow" unique_id=1248014267]
 layout_mode = 2
 text = "Send"
 
-[node name="ChatToggleButton" type="Button" parent="BottomLeftActions"]
+[node name="ChatToggleButton" type="Button" parent="BottomLeftActions" unique_id=2018618772]
 custom_minimum_size = Vector2(160, 50)
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_font_sizes/font_size = 20
 text = "Chat Button"
 
-[node name="ResultPanel" type="PanelContainer" parent="."]
+[node name="ResultPanel" type="PanelContainer" parent="." unique_id=628916457]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -166,7 +166,7 @@ offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ResultLabel" type="RichTextLabel" parent="ResultPanel"]
+[node name="ResultLabel" type="RichTextLabel" parent="ResultPanel" unique_id=1531828855]
 layout_mode = 2
 bbcode_enabled = true
 fit_content = true

@@ -35,7 +35,12 @@ func _spawn_existing_seats() -> void:
 func _on_message_received(op_code: int, data: Dictionary) -> void:
 	if op_code == 6:
 		_spawn_seat_for_player(data.get("userId", ""), data.get("username", "?"), data.get("lives", 10))
+	if op_code == 7:
+		_remove_seat_for_player(data.get("userId", ""))
 	if op_code == 9:
+		for player_id in _player_seats.keys():
+			if not GameState.players.has(player_id):
+				_remove_seat_for_player(player_id)
 		for pdata in data.get("players", []):
 			_spawn_seat_for_player(pdata.get("userId", ""), pdata.get("username", "?"), pdata.get("lives", 10))
 
@@ -70,3 +75,10 @@ func _on_player_eliminated(player_id: String) -> void:
 		var seat: Node3D = _player_seats[player_id]
 		var tween := create_tween()
 		tween.tween_property(seat, "modulate", Color(0.3, 0.3, 0.3), 0.5)
+
+func _remove_seat_for_player(player_id: String) -> void:
+	if not _player_seats.has(player_id):
+		return
+	var seat: Node3D = _player_seats[player_id]
+	_player_seats.erase(player_id)
+	seat.queue_free()
